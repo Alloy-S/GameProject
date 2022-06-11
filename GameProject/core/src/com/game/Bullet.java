@@ -33,7 +33,7 @@ public class Bullet extends Rectangle {
         position = new Vector2(x, y);
         direction = new Vector2();
 
-        damage = 50;
+        damage = 20;
 //        if (targetx > position.x + SET_MOUSE_LIMIT) {
 //            targetx = position.x + SET_MOUSE_LIMIT;
 //        } else if (targetx < position.x - SET_MOUSE_LIMIT) {

@@ -20,6 +20,8 @@ public class Player extends Rectangle {
     long lastBulletSpawn;
     int hp;
     int damage;
+    boolean dead = false;
+    int movementSpeed = 300;
 
     public Array<Bullet> bullets;
 
@@ -38,17 +40,17 @@ public class Player extends Rectangle {
     }
 
     public void update(float delta) {
-//        time += delta;
-//        float yInput = (Gdx.graphics.getHeight() - Gdx.input.getY());
-//        vec.set(Gdx.input.getX() - position.x, yInput - position.y).nor();
-//        //position is a Vector2 update sprite coordinates
-//        position.x += vec.x * 15f;
-//        position.y += vec.y * 15f;
+        if(Gdx.input.isKeyPressed(Input.Keys.A)) this.x -= movementSpeed * Gdx.graphics.getDeltaTime();
+        if(Gdx.input.isKeyPressed(Input.Keys.D)) this.x += movementSpeed * Gdx.graphics.getDeltaTime();
+        if(Gdx.input.isKeyPressed(Input.Keys.S)) this.y -= movementSpeed * Gdx.graphics.getDeltaTime();
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) this.y += movementSpeed * Gdx.graphics.getDeltaTime();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) this.x -= 200 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.D)) this.x += 200 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) this.y -= 200 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) this.y += 200 * Gdx.graphics.getDeltaTime();
+        if (this.x > 800 - 64) this.x = 800 - 64;
+        if (this.x < -64) this.x = -64;
+        if (this.y > 600 - 64) this.y = 600 - 64;
+        if (this.y < -64) this.y = -64;
+        System.out.println("x : " + this.x);
+        System.out.println("y : " + this.y);
     }
 
     public void draw(SpriteBatch batch) {
@@ -68,5 +70,12 @@ public class Player extends Rectangle {
 
     public void removeBullet(Bullet bullet){
         bullets.removeValue(bullet, true);
+    }
+
+    public Boolean isDead() {
+        if (this.hp <= 0) {
+            dead = true;
+        }
+        return dead;
     }
 }

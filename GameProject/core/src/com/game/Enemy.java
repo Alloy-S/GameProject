@@ -34,7 +34,7 @@ public class Enemy extends Rectangle {
 
     public void render (SpriteBatch bacth) {
         //bacth.draw();
-        bacth.draw(texture, x + 50, y + 50);
+        bacth.draw(texture, x, y);
     }
 
     public void takeDamage(int damage) {
