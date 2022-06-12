@@ -3,6 +3,7 @@ package com.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -33,7 +34,6 @@ public class GameScreen implements Screen {
     Texture dropImage;
     Texture bucketImage;
     OrthographicCamera camera;
-    Rectangle bucket;
     ArrayList<Bullet> bullets;
     Array<Enemy> enemies;
     long lastDropTime;
@@ -49,6 +49,8 @@ public class GameScreen implements Screen {
     Viewport viewport;
     Texture settingImage;
     private SmallScreen smallScreen;
+    Texture blank;
+    HealthBar helthPlayer;
 
 
 
@@ -58,6 +60,9 @@ public class GameScreen implements Screen {
 
         // load the images for the droplet and the bucket, 64x64 pixels each
         player = new Player(400-64, 20);
+        blank = new Texture("blank.png");
+        helthPlayer = new HealthBar(player);
+
 
 
         // load the drop sound effect and the rain background "music"
@@ -106,7 +111,7 @@ public class GameScreen implements Screen {
         // arguments to clear are the red, green
         // blue and alpha component in the range [0,1]
         // of the color to be used to clear the screen.
-        ScreenUtils.clear(255, 255, 255, 1);
+        ScreenUtils.clear(254, 254, 254, 1);
 
         // tell the camera to update its matrices.
         camera.update();
@@ -120,7 +125,7 @@ public class GameScreen implements Screen {
         player.draw(game.batch);
 
         if (player.isDead()) {
-            //game.setScreen(new Menu(game));
+            game.setScreen(new Menu(game));
         }
 
         // begin a new batch and draw the bucket and
@@ -144,7 +149,7 @@ public class GameScreen implements Screen {
 
                 break;
         }
-        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 300, 480);
+        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
         for (Bullet bullet: player.bullets) {
@@ -176,7 +181,9 @@ public class GameScreen implements Screen {
             }
         }
         System.out.println("*");
-
+//        game.batch.setColor(Color.GREEN);
+//        game.batch.draw(blank, 0, 0, Gdx.graphics.getWidth() * 0.01f * player.hp , 5);
+        helthPlayer.render();
         game.batch.end();
 
         if(smallScreen.getState() == 1){
@@ -206,7 +213,7 @@ public class GameScreen implements Screen {
             Enemy enemy = iterEn.next();
 
             game.batch.begin();
-            game.font.draw(game.batch, "HP = " + enemy.getHp(), enemy.x + 115, enemy.y + 130);
+            game.font.draw(game.batch, "HP = " + enemy.getHp(), enemy.x, enemy.y);
             game.batch.end();
 
             if (enemy.isDead()) {
