@@ -34,19 +34,6 @@ public class Bullet extends Rectangle {
         direction = new Vector2();
 
         damage = 20;
-//        if (targetx > position.x + SET_MOUSE_LIMIT) {
-//            targetx = position.x + SET_MOUSE_LIMIT;
-//        } else if (targetx < position.x - SET_MOUSE_LIMIT) {
-//            targetx = position.x - SET_MOUSE_LIMIT;
-//        }
-//
-//        if (targety > position.y + SET_MOUSE_LIMIT) {
-//            targety = position.y + SET_MOUSE_LIMIT;
-//        } else if (targety < position.y - SET_MOUSE_LIMIT) {
-//            targety = position.y - SET_MOUSE_LIMIT;
-//        }
-
-        //vec.set(targetx - position.x, (targety - position.y));
 
         direction.x = targetx - position.x;
         direction.y = targety - position.y;
@@ -60,19 +47,23 @@ public class Bullet extends Rectangle {
 
     public void update(float deltaTime) {
 //        y += speed * deltaTime;
-        if (position.x > 800) {
-            remove = true;
-        }
-        if (position.y > 600) {
-            remove = true;
-        }
-        position.x += direction.x * attackSpeed * deltaTime;
-        position.y += direction.y * attackSpeed * deltaTime;
-        this.x = position.x;
-        this.y = position.y;
+//        if (position.x > 800) {
+//            remove = true;
+//        }
+//        if (position.y > 600) {
+//            remove = true;
+//        }
+//        position.x += direction.x * attackSpeed * deltaTime;
+//        position.y += direction.y * attackSpeed * deltaTime;
+//        this.x = position.x;
+//        this.y = position.y;
     }
 
     public void render (SpriteBatch bacth) {
+        position.x += direction.x * attackSpeed * Gdx.graphics.getDeltaTime();
+        position.y += direction.y * attackSpeed * Gdx.graphics.getDeltaTime();
+        this.x = position.x;
+        this.y = position.y;
         bacth.draw(texture, position.x, position.y);
     }
 

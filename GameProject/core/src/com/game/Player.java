@@ -11,12 +11,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Player extends Rectangle {
+public class Player extends Rectangle implements Character {
 
     Sprite sprite;
     Texture texture;
-//    Vector2 vec;
-//    Vector2 position;
     long lastBulletSpawn;
     int hp;
     int damage;
@@ -29,14 +27,13 @@ public class Player extends Rectangle {
        texture = new Texture(Gdx.files.internal("kaktus.png"));
        sprite = new Sprite(texture);
        bullets = new Array<>();
-//       vec = new Vector2();
-//       position = new Vector2(800 / 2 - 64 / 2, 20);
-        this.x = x;
-        this.y = y;
-       width = 64;
-       height = 64;
-        hp = 100;
-        damage = 50;
+       this.x = x;
+       this.y = y;
+       this.width = 64;
+       this.height = 64;
+       hp = 100;
+       damage = 50;
+
     }
 
     public void update(float delta) {
@@ -63,6 +60,18 @@ public class Player extends Rectangle {
         this.hp -= damage;
     }
 
+    @Override
+    public void attack(Character target) {
+
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        batch.begin();
+        batch.draw(texture, x, y);
+        batch.end();
+    }
+
     public void addBullet(float targetx, float targety){
         bullets.add(new Bullet(x, y, targetx, targety));
         lastBulletSpawn = TimeUtils.nanoTime();
@@ -72,7 +81,8 @@ public class Player extends Rectangle {
         bullets.removeValue(bullet, true);
     }
 
-    public Boolean isDead() {
+    @Override
+    public boolean isDead() {
         if (this.hp <= 0) {
             dead = true;
         }

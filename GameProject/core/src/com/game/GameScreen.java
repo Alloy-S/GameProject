@@ -154,7 +154,7 @@ public class GameScreen implements Screen {
 
         for (Bullet bullet: player.bullets) {
             bullet.render(game.batch);
-            bullet.update(delta);
+//            bullet.update(delta);
         }
 
         for (Enemy enemy : enemies) {
