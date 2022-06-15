@@ -1,0 +1,33 @@
+
+Movement.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+up
+  rotate: false
+  xy: 1, 322
+  size: 711, 107
+  orig: 711, 107
+  offset: 0, 0
+  index: -1
+right
+  rotate: false
+  xy: 1, 216
+  size: 711, 104
+  orig: 711, 104
+  offset: 0, 0
+  index: -1
+down
+  rotate: false
+  xy: 1, 112
+  size: 696, 102
+  orig: 696, 102
+  offset: 0, 0
+  index: -1
+left
+  rotate: false
+  xy: 1, 1
+  size: 683, 109
+  orig: 683, 109
+  offset: 0, 0
+  index: -1

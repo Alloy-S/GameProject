@@ -1,5 +1,6 @@
 package com.game;
 
+import com.game.PlayerPack.Player;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,7 +12,7 @@ public class HealthBar {
     private final float HEIGHT = 15;
     Texture bar;
     Player player;
-    Enemy enemy;
+    //Enemy enemy;
     SpriteBatch batch;
     BitmapFont font;
     private int maxHp;
@@ -25,6 +26,7 @@ public class HealthBar {
     }
 
     public void render() {
+
         batch.begin();
         batch.setColor(Color.RED);
         batch.draw(bar, player.x, player.y, WIDTH, HEIGHT);

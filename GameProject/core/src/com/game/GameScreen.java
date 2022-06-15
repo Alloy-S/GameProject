@@ -1,17 +1,15 @@
 package com.game;
 
+import com.game.EnemyPack.Enemy;
+import com.game.PlayerPack.Player;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -34,12 +32,12 @@ public class GameScreen implements Screen {
     Texture dropImage;
     Texture bucketImage;
     OrthographicCamera camera;
-    ArrayList<Bullet> bullets;
     Array<Enemy> enemies;
+    Array<Bullet> bullets;
     long lastDropTime;
     int dropsGathered;
     float shootTime;
-    final float shootWaitTime = 0.5f;
+    final float shootWaitTime = 0.1f;
     Player player;
     Table maintable;
     ImageButton setting;
@@ -60,7 +58,6 @@ public class GameScreen implements Screen {
 
         // load the images for the droplet and the bucket, 64x64 pixels each
         player = new Player(400-64, 20);
-        blank = new Texture("blank.png");
         helthPlayer = new HealthBar(player);
 
 
@@ -73,8 +70,8 @@ public class GameScreen implements Screen {
 
 
         // create the raindrops array and spawn the first raindrop
-        bullets = new ArrayList<Bullet>();
         enemies = new Array<Enemy>();
+        bullets = new Array<>();
         //player.addBullet(400, 600);
         spawnEnemy();
 
@@ -88,9 +85,9 @@ public class GameScreen implements Screen {
         setting = new ImageButton(skin);
         setting.getStyle().imageUp  = new TextureRegionDrawable(new TextureRegion(settingImage));
         setting.getStyle().imageDown  = new TextureRegionDrawable(new TextureRegion(settingImage));
-        maintable.add(setting).width(16).height(16).padBottom(20);
+        maintable.add(setting).width(50).height(50).padBottom(20);
         stage.addActor(maintable);
-        maintable.setPosition(392,284);
+        maintable.setPosition(380,270);
         smallScreen = new SmallScreen(game);
         smallScreen.show();
     }
@@ -120,12 +117,10 @@ public class GameScreen implements Screen {
         // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
 
-        //player.update(delta);
-        player.update(delta);
-        player.draw(game.batch);
+        player.render(game.batch);
 
         if (player.isDead()) {
-            game.setScreen(new Menu(game));
+            //game.setScreen(new Menu(game));
         }
 
         // begin a new batch and draw the bucket and
@@ -149,9 +144,10 @@ public class GameScreen implements Screen {
 
                 break;
         }
-        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.font.setColor(Color.RED);
+        game.font.draw(game.batch, "Enemy Destroyed: " + dropsGathered, 320, 550);
 
-
+        if (!player.bullets.isEmpty())
         for (Bullet bullet: player.bullets) {
             bullet.render(game.batch);
 //            bullet.update(delta);
@@ -159,26 +155,7 @@ public class GameScreen implements Screen {
 
         for (Enemy enemy : enemies) {
             enemy.render(game.batch);
-
-            if (enemy.bullets.isEmpty()){
-                if (TimeUtils.nanoTime() - enemy.getLastBulletSpawn() > 1000000000) enemy.addBullet();
-            }else {
-                for (Bullet bullet : enemy.bullets) {
-                    bullet.render(game.batch);
-                    bullet.update(Gdx.graphics.getDeltaTime());
-                    if (TimeUtils.nanoTime() - enemy.getLastBulletSpawn() > 1000000000) enemy.addBullet();
-
-                    if (bullet.overlaps(player)) {
-                        player.takeDamage(bullet.getDamage());
-                        enemy.removeBullet(bullet);
-                    }
-
-                    if(bullet.position.x<0 || bullet.position.x > 800-16 || bullet.position.y > 600-16
-                            || bullet.position.y<0){
-                        enemy.removeBullet(bullet);
-                    }
-                }
-            }
+            enemy.attack(player);
         }
         System.out.println("*");
 //        game.batch.setColor(Color.GREEN);
@@ -195,7 +172,6 @@ public class GameScreen implements Screen {
         shootTime += delta;
         if ((Gdx.input.isTouched()) && shootTime >= shootWaitTime) {
             player.addBullet(Gdx.input.getX(), Gdx.graphics.getHeight()- Gdx.input.getY());
-            //bullets.add(new Bullet(player.x - 64, player.y + 20, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()));
             shootTime = 0;
         }
 

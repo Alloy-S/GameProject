@@ -11,21 +11,30 @@ import javax.xml.stream.events.StartDocument;
 import java.nio.file.attribute.UserPrincipal;
 
 public class Bullet extends Rectangle {
-    public static int attackSpeed = 500;
+    public int bulSpeed = 500;
     private static Texture texture;
-    Vector2 direction;
-    Vector2 position;
-    Sprite sprite;
+    public Vector2 direction;
+    public Vector2 position;
     private int damage;
     private final float SET_MOUSE_LIMIT = 150;
 
     public boolean remove = false;
+
+    public void setBulSpeed(int bulSpeed) {
+        this.bulSpeed = bulSpeed;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+
+
     public Bullet (float x, float y, float targetx, float targety) {
 //        this.x = x;
 //        this.y = y;
         if (texture == null) {
             texture = new Texture("bomb.png");
-            sprite = new Sprite(texture);
         }
 
         width = 16;
@@ -45,23 +54,9 @@ public class Bullet extends Rectangle {
         }
     }
 
-    public void update(float deltaTime) {
-//        y += speed * deltaTime;
-//        if (position.x > 800) {
-//            remove = true;
-//        }
-//        if (position.y > 600) {
-//            remove = true;
-//        }
-//        position.x += direction.x * attackSpeed * deltaTime;
-//        position.y += direction.y * attackSpeed * deltaTime;
-//        this.x = position.x;
-//        this.y = position.y;
-    }
-
     public void render (SpriteBatch bacth) {
-        position.x += direction.x * attackSpeed * Gdx.graphics.getDeltaTime();
-        position.y += direction.y * attackSpeed * Gdx.graphics.getDeltaTime();
+        position.x += direction.x * bulSpeed * Gdx.graphics.getDeltaTime();
+        position.y += direction.y * bulSpeed * Gdx.graphics.getDeltaTime();
         this.x = position.x;
         this.y = position.y;
         bacth.draw(texture, position.x, position.y);
