@@ -28,8 +28,6 @@ import java.util.Iterator;
 public class GameScreen implements Screen {
     final AfterDark game;
     private State state = State.RUN;
-    Texture dropImage;
-    Texture bucketImage;
     OrthographicCamera camera;
     Array<Enemy> enemies;
     Array<Bullet> bullets;
@@ -114,6 +112,8 @@ public class GameScreen implements Screen {
         // tell the camera to update its matrices.
         camera.update();
 
+
+
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
@@ -127,6 +127,7 @@ public class GameScreen implements Screen {
         // begin a new batch and draw the bucket and
         // all drops
         game.batch.begin();
+        game.font.draw(game.batch, "FPS = " + Gdx.graphics.getFramesPerSecond(), 10, 550 );
         stage.act();
         stage.draw();
         Gdx.input.setInputProcessor(stage);
@@ -228,8 +229,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        dropImage.dispose();
-        bucketImage.dispose();
     }
     public void pause(){
         this.state = State.PAUSE;
