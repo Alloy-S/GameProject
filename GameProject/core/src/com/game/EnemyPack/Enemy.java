@@ -12,13 +12,13 @@ import com.game.PlayerPack.Player;
 
 public class Enemy extends Rectangle implements Character{
     Character target;
-    private int hp = 100;
+    public int hp = 100;
     private Boolean dead = false;
     Texture texture;
     //Player target;
     int bulSpeed;
     long attackTime;
-    private long lastBulletSpawn;
+    public long lastBulletSpawn;
     public Array<Bullet> bullets;
     SpriteBatch batch;
     int damage;
@@ -96,6 +96,10 @@ public class Enemy extends Rectangle implements Character{
 
     public int getDamage() {
         return damage;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 
     public void setAttackTime(long attackTime) {

@@ -52,11 +52,11 @@ public class EnemyType2 extends Enemy {
         this.y += moveSpeed * Gdx.graphics.getDeltaTime();
         if (this.y > maxY) {
             this.y = maxY;
-            moveSpeed*= -1;
+            moveSpeed *= -1;
         }
-        if(this.y<minY){
+        if(this.y < minY){
             this.y = minY;
-            this.moveSpeed*=-1;
+            this.moveSpeed *=-1;
         }
 
     }

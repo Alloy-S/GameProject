@@ -63,7 +63,6 @@ public class Bullet extends Rectangle {
     }
 
 
-
     public int getDamage() {
         return damage;
     }

@@ -109,26 +109,39 @@ public class Player extends Rectangle implements Character {
             angle = 0;
         System.out.println(angle);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) this.x -= movementSpeed * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) this.x += movementSpeed * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) this.y -= movementSpeed * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) this.y += movementSpeed * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.A)){
+            this.x -= movementSpeed * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyJustPressed(Input.Keys.A)) player.setCurrentAnimation(2);
+            System.out.println("%");
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            this.x += movementSpeed * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyJustPressed(Input.Keys.D)) player.setCurrentAnimation(0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            this.y -= movementSpeed * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyJustPressed(Input.Keys.S)) player.setCurrentAnimation(1);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            this.y += movementSpeed * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W)) player.setCurrentAnimation(3);
+        }
 
         if (this.x > 800 - 95) this.x = 800 - 95;
         if (this.x < 0) this.x = 0;
         if (this.y > 600 - 95) this.y = 600 - 95;
         if (this.y < 0) this.y = 0;
 
-        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D))) {
-            press = true;
-            if ((Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.S) || Gdx.input.isKeyJustPressed(Input.Keys.D))) {
-                player.setCurrentAnimation(stage);
-            }
-        } else {
-            press = false;
-        }
+//        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D))) {
+//            press = true;
+//            if ((Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.S) || Gdx.input.isKeyJustPressed(Input.Keys.D))) {
+//                player.setCurrentAnimation(stage);
+//            }
+//        } else {
+//            press = false;
+//        }
 
-        if (!press) {
+        if (Gdx.input.isTouched()) {
             if (angle >= 45 && angle < 135) {
                 System.out.println("Down");
                 player.setCurrentAnimation(PlayerMovement.stillDOWN);

@@ -1,6 +1,7 @@
 package com.game;
 
 import com.game.EnemyPack.Enemy;
+import com.game.EnemyPack.EnemyType2;
 import com.game.PlayerPack.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -22,8 +23,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class GameScreen implements Screen {
@@ -47,7 +46,6 @@ public class GameScreen implements Screen {
     Viewport viewport;
     Texture settingImage;
     private SmallScreen smallScreen;
-    Texture blank;
     HealthBar helthPlayer;
 
 
@@ -96,9 +94,12 @@ public class GameScreen implements Screen {
 
     private void spawnEnemy() {
         Enemy enemy = new Enemy(player);
+        Enemy enemyv2 = new EnemyType2(player);
+
         enemy.x = MathUtils.random(100, 800 - 100);
         enemy.y = MathUtils.random(100, 480 - 100);
         enemies.add(enemy);
+        enemies.add(enemyv2);
         lastDropTime = TimeUtils.millis();
     }
 
