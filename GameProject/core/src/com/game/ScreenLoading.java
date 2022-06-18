@@ -14,9 +14,6 @@ public class ScreenLoading extends ScreenAdapter {
     public ScreenLoading(AfterDark AssetGame){
 
         this.AssetGame = AssetGame;
-        music = Gdx.audio.newMusic(Gdx.files.internal("bgm.wav"));
-        music.setVolume(0.2f);
-        music.setLooping(true);
 
     }
     @Override

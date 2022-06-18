@@ -56,12 +56,14 @@ public class SmallScreen extends ScreenAdapter {
         addButton(50, 50, "default").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.soundclick.play();
                 state = 1;
             }
         });
         addButton(50, 50, "btn-home").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.soundclick.play();
                 state = 2;
             }
         });

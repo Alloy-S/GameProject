@@ -63,11 +63,6 @@ public class GameScreen  implements Screen{
         bullets = player.bullets;
         spawnEnemy();
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("bgm.wav"));
-        music.setVolume(0.2f);
-        music.setLooping(true);
-        music.play();
-
 
         atlas = new TextureAtlas("button/btn-skin.atlas");
         skin = new Skin(Gdx.files.internal("button/btn-skin.json"),atlas);
@@ -134,6 +129,7 @@ public class GameScreen  implements Screen{
                 setting.addListener(new ClickListener(){
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
+                        game.soundclick.play();
                         pause();
                     }
                 });
@@ -206,7 +202,6 @@ public class GameScreen  implements Screen{
             smallScreen.setState(0);
             resume();
         } else if (smallScreen.getState() == 2) {
-            music.dispose();
             game.setScreen(new Menu(game));
         }
         game.batch.end();
