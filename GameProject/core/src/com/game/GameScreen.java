@@ -1,23 +1,23 @@
 package com.game;
 
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.game.EnemyPack.Enemy;
 import com.game.EnemyPack.EnemyType2;
+import com.game.EnemyPack.EnemyType3;
+import com.game.EnemyPack.EnemyType4;
 import com.game.PlayerPack.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.Iterator;
 
-public class GameScreen implements Screen {
+public class GameScreen  implements Screen{
     final AfterDark game;
     private State state = State.RUN;
     OrthographicCamera camera;
@@ -37,17 +37,14 @@ public class GameScreen implements Screen {
     final float shootWaitTime = 0.1f;
     Player player;
     Table maintable;
-    ImageButton setting;
+    Button setting;
     TextureAtlas atlas;
     protected Skin skin;
     private Stage stage;
     Viewport viewport;
-    Texture settingImage;
     private SmallScreen smallScreen;
     HealthBar helthPlayer;
-
-
-
+    public Music music;
 
     public GameScreen(final AfterDark game) {
         this.game = game;
@@ -56,48 +53,46 @@ public class GameScreen implements Screen {
         player = new Player(400-64, 20);
         helthPlayer = new HealthBar(player);
 
-
-
-        // load the drop sound effect and the rain background "music"
-
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
+        camera.setToOrtho(false, 600, 800);
 
 
         // create the raindrops array and spawn the first raindrop
         enemies = new Array<Enemy>();
-        bullets = new Array<>();
-        //player.addBullet(400, 600);
+        bullets = player.bullets;
         spawnEnemy();
 
-        atlas = new TextureAtlas("uiskin.atlas");
-        skin = new Skin(Gdx.files.internal("uiskin.json"),atlas);
-        settingImage = new Texture(Gdx.files.internal("setting.png"));
-        viewport = new ExtendViewport(800,600);
+        music = Gdx.audio.newMusic(Gdx.files.internal("bgm.wav"));
+        music.setVolume(0.2f);
+        music.setLooping(true);
+        music.play();
+
+
+        atlas = new TextureAtlas("button/btn-skin.atlas");
+        skin = new Skin(Gdx.files.internal("button/btn-skin.json"),atlas);
+        viewport = new ExtendViewport(600,720);
         stage = new Stage(viewport);
         maintable = new Table();
         maintable.setFillParent(true);
-        setting = new ImageButton(skin);
-        setting.getStyle().imageUp  = new TextureRegionDrawable(new TextureRegion(settingImage));
-        setting.getStyle().imageDown  = new TextureRegionDrawable(new TextureRegion(settingImage));
-        maintable.add(setting).width(50).height(50).padBottom(20);
+        setting = new Button(skin, "btn-setting");
+        maintable.add(setting).width(50).height(50).padTop(20).padRight(20);
         stage.addActor(maintable);
-        maintable.setPosition(380,270);
+        maintable.setPosition(275,340);
         smallScreen = new SmallScreen(game);
         smallScreen.show();
     }
 
-
-
     private void spawnEnemy() {
         Enemy enemy = new Enemy(player);
         Enemy enemyv2 = new EnemyType2(player);
+        Enemy enemyV3 = new EnemyType3(player);
+        Enemy enemyV4 = new EnemyType4(player);
 
-        enemy.x = MathUtils.random(100, 800 - 100);
-        enemy.y = MathUtils.random(100, 480 - 100);
-        enemies.add(enemy);
-        enemies.add(enemyv2);
+        //enemies.add(enemy);
+        //enemies.add(enemyv2);
+        enemies.add(enemyV3);
+        //enemies.add(enemyV4);
         lastDropTime = TimeUtils.millis();
     }
 
@@ -118,22 +113,21 @@ public class GameScreen implements Screen {
         // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
 
-        player.render(game.batch);
 
-        if (player.isDead()) {
-            //game.setScreen(new Menu(game));
-        }
 
         // begin a new batch and draw the bucket and
         // all drops
         game.batch.begin();
-        game.font.draw(game.batch, "FPS = " + Gdx.graphics.getFramesPerSecond(), 10, 550 );
+        game.font.draw(game.batch, "FPS = " + Gdx.graphics.getFramesPerSecond(), 10, 700 );
         stage.act();
         stage.draw();
         Gdx.input.setInputProcessor(stage);
+
+
         switch(state){
             case PAUSE:
                 smallScreen.render(60);
+
 
                 break;
             case RUN:
@@ -143,77 +137,86 @@ public class GameScreen implements Screen {
                         pause();
                     }
                 });
+                game.font.setColor(Color.RED);
+                game.font.draw(game.batch, "Enemy Destroyed: " + dropsGathered, 320, 550);
 
-                break;
-        }
-        game.font.setColor(Color.RED);
-        game.font.draw(game.batch, "Enemy Destroyed: " + dropsGathered, 320, 550);
+                player.render(game.batch);
 
-        if (!player.bullets.isEmpty())
-        for (Bullet bullet: player.bullets) {
-            bullet.render(game.batch);
-//            bullet.update(delta);
-        }
+                if (player.isDead()) {
+                    music.dispose();
+                    //game.setScreen(new Menu(game));
+                }
+                if (!player.bullets.isEmpty()) {
+                    for (Bullet bullet: player.bullets) {
+                        bullet.render(game.batch);
+                    }
+                }
 
-        for (Enemy enemy : enemies) {
-            enemy.render(game.batch);
-            enemy.attack(player);
-        }
-        System.out.println("*");
+
+                for (Enemy enemy : enemies) {
+                    enemy.render(game.batch);
+                    enemy.attack();
+                }
+                System.out.println("*");
 //        game.batch.setColor(Color.GREEN);
 //        game.batch.draw(blank, 0, 0, Gdx.graphics.getWidth() * 0.01f * player.hp , 5);
-        helthPlayer.render();
-        game.batch.end();
+                helthPlayer.render();
+
+                if (enemies.isEmpty()) {
+                    System.out.println("YESSSSSSSSSSSSSSSSSS");
+                }
+
+
+                //shoting code
+                shootTime += delta;
+                if ((Gdx.input.isTouched()) && shootTime >= shootWaitTime) {
+                    player.attack();
+//                    player.addBullet(Gdx.input.getX(), Gdx.graphics.getHeight()- Gdx.input.getY());
+                    shootTime = 0;
+                }
+
+                if (TimeUtils.millis() - lastDropTime > 4000) {
+                    //spawnEnemy();
+                }
+
+                Iterator<Enemy> iterEn = enemies.iterator();
+
+                while (iterEn.hasNext()) {
+                    Enemy enemy = iterEn.next();
+
+                    if (enemy.isDead()) {
+                        iterEn.remove();
+                        dropsGathered++;
+                    }
+                    Iterator<Bullet> iterBull = player.bullets.iterator();
+                    while (iterBull.hasNext()) {
+                        Bullet bullet = iterBull.next();
+
+                        //enemy terkena bullet maka take damage
+                        if (bullet.overlaps(enemy)) {
+                            enemy.takeDamage(player.damage);
+                            iterBull.remove();
+                        }
+                    }
+                }
+                break;
+        }
 
         if(smallScreen.getState() == 1){
             smallScreen.setState(0);
             resume();
+        } else if (smallScreen.getState() == 2) {
+            music.dispose();
+            game.setScreen(new Menu(game));
         }
-
-        //shoting code
-        shootTime += delta;
-        if ((Gdx.input.isTouched()) && shootTime >= shootWaitTime) {
-            player.addBullet(Gdx.input.getX(), Gdx.graphics.getHeight()- Gdx.input.getY());
-            shootTime = 0;
-        }
-
-        if (TimeUtils.millis() - lastDropTime > 4000) {
-            spawnEnemy();
-        }
-//
-//
-//        // move the raindrops, remove any that are beneath the bottom edge of
-//        // the screen or that hit the bucket. In the later case we increase the
-//        // value our drops counter and add a sound effect.
-        Iterator<Enemy> iterEn = enemies.iterator();
-
-		while (iterEn.hasNext()) {
-            Enemy enemy = iterEn.next();
-
-            game.batch.begin();
-            game.font.draw(game.batch, "HP = " + enemy.getHp(), enemy.x, enemy.y);
-            game.batch.end();
-
-            if (enemy.isDead()) {
-                iterEn.remove();
-                dropsGathered++;
-            }
-            Iterator<Bullet> iterBull = player.bullets.iterator();
-            while (iterBull.hasNext()) {
-                Bullet bullet = iterBull.next();
-
-                //enemy terkena bullet maka take damage
-                if (bullet.overlaps(enemy)) {
-                    enemy.takeDamage(player.damage);
-                    iterBull.remove();
-                }
-            }
-		}
+        game.batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
+
     }
+
 
     @Override
     public void show() {
@@ -223,19 +226,23 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void hide() {
-    }
-
-
-    @Override
     public void dispose() {
+        music.dispose();
     }
+
     public void pause(){
         this.state = State.PAUSE;
     }
+
     public void resume(){
         this.state = State.RUN;
     }
+
+    @Override
+    public void hide() {
+
+    }
+
     public enum State{
         PAUSE,RUN
     }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -45,29 +46,29 @@ public class SmallScreen extends ScreenAdapter {
 
     @Override
     public void show(){
-        atlas = new TextureAtlas("uiskin.atlas");
-        skin = new Skin(Gdx.files.internal("uiskin.json"),atlas);
-        viewport = new ExtendViewport(800,600);
+        atlas = new TextureAtlas("button/btn-skin.atlas");
+        skin = new Skin(Gdx.files.internal("button/btn-skin.json"),atlas);
+        viewport = new ExtendViewport(600,720);
         stage = new Stage(viewport);
         maintable = new Table();
         maintable.setFillParent(true);
         stage.addActor(maintable);
-        addButton("Resume").addListener(new ClickListener(){
+        addButton(50, 50, "default").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 state = 1;
             }
         });
-        addButton("Exit").addListener(new ClickListener(){
+        addButton(50, 50, "btn-home").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Menu(game));
+                state = 2;
             }
         });
     }
-    private TextButton addButton(String name){
-        TextButton button = new TextButton(name,skin);
-        maintable.add(button).width(100).height(50).padBottom(10);
+    private Button addButton(float width, float height, String style){
+        Button button = new Button(skin, style);
+        maintable.add(button).width(width).height(height).padBottom(10);
         maintable.row();
         return button;
     }

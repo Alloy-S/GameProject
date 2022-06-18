@@ -1,4 +1,5 @@
 package com.game.EnemyPack;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.game.Character;
 import com.game.Bullet;
 
@@ -15,38 +16,45 @@ public class Enemy extends Rectangle implements Character{
     public int hp = 100;
     private Boolean dead = false;
     Texture texture;
-    //Player target;
     int bulSpeed;
     long attackTime;
+    int damage;
     public long lastBulletSpawn;
     public Array<Bullet> bullets;
     SpriteBatch batch;
-    int damage;
+    BitmapFont font;
+
 
     public Enemy(com.game.PlayerPack.Player target) {
         if (texture == null) {
             texture = new Texture("monster-icon.png");
         }
-
+        font = new BitmapFont();
         batch = new SpriteBatch();
         this.target = target;
         width = 48;
         height = 48;
         bullets = new Array<>();
         this.damage = 10;
-        x = MathUtils.random(60, 752);
+        x = MathUtils.random(60, 652);
         y = MathUtils.random(60, 552);
         this.attackTime = 1000000000;
         this.bulSpeed = 500;
+        setRandomPosition();
     }
 
     public int getHp() {
         return hp;
     }
 
-    public void render (SpriteBatch bacth) {
+    public void render (SpriteBatch batch) {
         //bacth.draw();
-        bacth.draw(texture, x, y);
+        batch.draw(texture, x, y);
+        displayHp(batch);
+    }
+
+    public void displayHp(SpriteBatch batch) {
+        font.draw(batch, "HP = " + this.hp, this.x, this.y);
     }
 
     public void takeDamage(int damage) {
@@ -54,7 +62,7 @@ public class Enemy extends Rectangle implements Character{
     }
 
     @Override
-    public void attack(Character target) {
+    public void attack() {
         batch.begin();
         if (bullets.isEmpty()){
             if (TimeUtils.nanoTime() - lastBulletSpawn > attackTime) {
@@ -70,13 +78,18 @@ public class Enemy extends Rectangle implements Character{
                     removeBullet(bullet);
                 }
 
-                if(bullet.position.x<0 || bullet.position.x > 800-16 || bullet.position.y > 600-16
+                if(bullet.position.x<0 || bullet.position.x > 600-16 || bullet.position.y > 720-16
                         || bullet.position.y<0){
                     removeBullet(bullet);
                 }
             }
         }
         batch.end();
+    }
+
+    public void setRandomPosition() {
+        this.x = MathUtils.random(100, 600 - 100);
+        this.y = MathUtils.random(100, 700 - 100);
     }
 
     public boolean isDead() {

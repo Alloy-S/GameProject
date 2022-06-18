@@ -93,8 +93,8 @@ public class Player extends Rectangle implements Character {
     }
 
     @Override
-    public void attack(Character target) {
-
+    public void attack() {
+        addBullet(Gdx.input.getX(), Gdx.graphics.getHeight()- Gdx.input.getY());
     }
 
     @Override
@@ -112,24 +112,27 @@ public class Player extends Rectangle implements Character {
         if (Gdx.input.isKeyPressed(Input.Keys.A)){
             this.x -= movementSpeed * Gdx.graphics.getDeltaTime();
             if (Gdx.input.isKeyJustPressed(Input.Keys.A)) player.setCurrentAnimation(2);
-            System.out.println("%");
+            press = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             this.x += movementSpeed * Gdx.graphics.getDeltaTime();
             if (Gdx.input.isKeyJustPressed(Input.Keys.D)) player.setCurrentAnimation(0);
+            press = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             this.y -= movementSpeed * Gdx.graphics.getDeltaTime();
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)) player.setCurrentAnimation(1);
+            press = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             this.y += movementSpeed * Gdx.graphics.getDeltaTime();
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) player.setCurrentAnimation(3);
+            press = true;
         }
 
-        if (this.x > 800 - 95) this.x = 800 - 95;
+        if (this.x > 600 - 95) this.x = 600 - 95;
         if (this.x < 0) this.x = 0;
-        if (this.y > 600 - 95) this.y = 600 - 95;
+        if (this.y > 800 - 95) this.y = 720 - 95;
         if (this.y < 0) this.y = 0;
 
 //        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D))) {
@@ -141,7 +144,7 @@ public class Player extends Rectangle implements Character {
 //            press = false;
 //        }
 
-        if (Gdx.input.isTouched()) {
+        if (!press || Gdx.input.isTouched()) {
             if (angle >= 45 && angle < 135) {
                 System.out.println("Down");
                 player.setCurrentAnimation(PlayerMovement.stillDOWN);
@@ -160,6 +163,7 @@ public class Player extends Rectangle implements Character {
                 stage = 0;
             }
         }
+        press = false;
     }
 
     public void addBullet(float targetx, float targety){

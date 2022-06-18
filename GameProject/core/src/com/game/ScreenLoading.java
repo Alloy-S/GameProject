@@ -1,14 +1,23 @@
 package com.game;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 
 public class ScreenLoading extends ScreenAdapter {
 
     private GameScreen game;
     private AfterDark AssetGame;
+    Music music;
+
     public ScreenLoading(AfterDark AssetGame){
+
         this.AssetGame = AssetGame;
+        music = Gdx.audio.newMusic(Gdx.files.internal("bgm.wav"));
+        music.setVolume(0.2f);
+        music.setLooping(true);
+
     }
     @Override
     public void render(float delta) {
@@ -17,7 +26,13 @@ public class ScreenLoading extends ScreenAdapter {
 
     @Override
     public void show() {
+        //music.play();
         game = new GameScreen(AssetGame);
 
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 }

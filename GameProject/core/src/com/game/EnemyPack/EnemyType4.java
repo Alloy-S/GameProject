@@ -29,6 +29,7 @@ public class EnemyType4 extends Enemy {
         targetx = 0;
         targety = 0;
 
+        setRandomPosition();
         position = new Vector2(this.x, this.y);
         direction = new Vector2();
 
@@ -59,8 +60,8 @@ public class EnemyType4 extends Enemy {
             targety = position.y;
             if(time>5) {
                 do {
-                    targetx = MathUtils.random(0, 752);
-                    targety = MathUtils.random(60, 552);
+                    targetx = MathUtils.random(0, 700);
+                    targety = MathUtils.random(60, 500);
                 } while (checkLength(targetx, targety)<300);
                 time -= 5;
                 this.hide = true;

@@ -1,0 +1,51 @@
+{
+"com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+	"default": {
+		"up": "Button",
+		"down": "ButtonClicked",
+		"over": "ButtonHover"
+	},
+	"btn-sound": {
+		"up": "sound1",
+		"down": "sound3",
+		"over": "sound2",
+		"disabled": "sound4"
+	},
+	"btn-info": {
+		"up": "info1",
+		"down": "info3",
+		"over": "info2"
+	},
+	"btn-exit": {
+		"up": "exit1",
+		"down": "exit3",
+		"over": "exit2"
+	},
+	"btn-home": {
+		"up": "home1",
+		"down": "home3",
+		"over": "home2"
+	},
+	"btn-cancel": {
+		"up": "silang1",
+		"down": "silang3",
+		"over": "silang2"
+	},
+	"btn-pause": {
+		"up": "pause1",
+		"down": "pause3",
+		"over": "pause2"
+	},
+	"btn-music": {
+		"up": "speaker1",
+		"down": "speaker3",
+		"over": "speaker2",
+		"disabled": "speaker4"
+	},
+	"btn-setting": {
+		"up": "settings1",
+		"down": "settings3",
+		"over": "settings2"
+	}
+}
+}

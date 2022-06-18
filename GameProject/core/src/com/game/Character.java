@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 
 public interface Character {
     void takeDamage(int damage);
-    public void attack(Character target);
+    public void attack();
     public void render(SpriteBatch batch);
     public boolean isDead();
 }

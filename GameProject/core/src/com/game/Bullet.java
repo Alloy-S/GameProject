@@ -16,7 +16,6 @@ public class Bullet extends Rectangle {
     public Vector2 direction;
     public Vector2 position;
     private int damage;
-    private final float SET_MOUSE_LIMIT = 150;
 
     public boolean remove = false;
 
@@ -31,8 +30,6 @@ public class Bullet extends Rectangle {
 
 
     public Bullet (float x, float y, float targetx, float targety) {
-//        this.x = x;
-//        this.y = y;
         if (texture == null) {
             texture = new Texture("bomb.png");
         }

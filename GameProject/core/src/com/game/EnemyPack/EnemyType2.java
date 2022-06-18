@@ -2,6 +2,7 @@ package com.game.EnemyPack;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.game.EnemyPack.Enemy;
 import com.game.PlayerPack.Player;
 import com.game.Bullet;
@@ -22,7 +23,7 @@ public class EnemyType2 extends Enemy {
         super.setBulSpeed(250);
         super.setAttackTime(900000000);
         moveSpeed = 80;
-
+        setRandomPosition();
         checkY();
 
         maxY = this.y + distance;
@@ -32,7 +33,7 @@ public class EnemyType2 extends Enemy {
     //mengecek tempat spawn agar tidak melebihi window
     public void checkY(){
         if(mode == 0) {
-            if (this.y + 100 > 600-getHeight()) {
+            if (this.y + 100 > 720-getHeight()) {
                 super.setY(this.y - 100);
             }
             if (this.y - 100 < getHeight()) {

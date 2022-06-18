@@ -1,17 +1,25 @@
 package com.game;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AfterDark extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
+	public Music music;
+	public Sound soundclick;
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
 		font = new BitmapFont(); // use libGDX's default Arial font
+		soundclick = Gdx.audio.newSound(Gdx.files.internal("button-click.wav"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("bgm.wav"));
+
 		this.setScreen(new Menu(this));
 	}
 
@@ -19,6 +27,8 @@ public class AfterDark extends Game {
 	public void render() {
 		super.render();
 	}
+
+
 
 	@Override
 	public void dispose() {

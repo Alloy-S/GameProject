@@ -21,6 +21,7 @@ public class EnemyType3 extends Enemy {
         this.height = 16;
         this.width = 16;
         this.moveSpeed = 30;
+        setRandomPosition();
 
         position = new Vector2(this.x, this.y);
         direction = new Vector2();
@@ -49,7 +50,7 @@ public class EnemyType3 extends Enemy {
     }
 
     @Override
-    public void attack(Character target) {
+    public void attack() {
         if (this.overlaps((Rectangle) target)) {
             this.setHp(0);
             target.takeDamage(this.getDamage());
