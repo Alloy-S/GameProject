@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -26,12 +28,14 @@ public class Menu extends ScreenAdapter {
     Texture bg;
     int mute;
     Button button;
+    BitmapFont menuFont;
 
     public Menu(AfterDark AssetGame){
         this.AssetGame = AssetGame;
         bg = new Texture("forest3.png");
         AssetGame.music.setVolume(0.2f);
         AssetGame.music.setLooping(true);
+        menuFont = new BitmapFont(Gdx.files.internal("snap ITC.fnt"));
 
     }
     @Override
@@ -41,6 +45,8 @@ public class Menu extends ScreenAdapter {
 
         AssetGame.batch.begin();
         AssetGame.batch.draw(bg, 0, 0);
+        GlyphLayout menuLayout = new GlyphLayout(menuFont, "Welcome to the jungle");
+        menuFont.draw(AssetGame.batch, menuLayout, 100, 500);
         AssetGame.batch.end();
         stage.act();
         stage.draw();
