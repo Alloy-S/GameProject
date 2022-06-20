@@ -1,0 +1,83 @@
+
+window.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+1
+  rotate: false
+  xy: 553, 1641
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+11
+  rotate: false
+  xy: 1, 775
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+19
+  rotate: false
+  xy: 811, 1641
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 1, 517
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+22
+  rotate: false
+  xy: 1069, 1641
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+23
+  rotate: false
+  xy: 1, 259
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+41
+  rotate: false
+  xy: 1327, 1641
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 1, 1
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 1585, 1641
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+Snap ITC
+  rotate: false
+  xy: 1, 1033
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+widowskill
+  rotate: false
+  xy: 1, 1547
+  size: 550, 350
+  orig: 550, 350
+  offset: 0, 0
+  index: -1

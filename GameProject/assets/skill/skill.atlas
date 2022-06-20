@@ -1,0 +1,76 @@
+
+skill.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+1
+  rotate: false
+  xy: 873, 1185
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+11
+  rotate: false
+  xy: 1, 259
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+19
+  rotate: false
+  xy: 259, 517
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 1, 775
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+22
+  rotate: false
+  xy: 1131, 1185
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+23
+  rotate: false
+  xy: 1, 517
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+41
+  rotate: false
+  xy: 259, 775
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 615, 1185
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 1, 1
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+window
+  rotate: false
+  xy: 1, 1033
+  size: 612, 408
+  orig: 612, 408
+  offset: 0, 0
+  index: -1

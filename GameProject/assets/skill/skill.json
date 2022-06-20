@@ -1,0 +1,28 @@
+{
+"com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+	"default": {
+		"up": "2",
+		"down": "2"
+	},
+	"skill-atkSpd": {
+		"up": "1",
+		"down": "1"
+	},
+	"skill-atkdmg": {
+		"up": "6",
+		"down": "6"
+	},
+	"skill-invisible": {
+		"up": "19",
+		"down": "19"
+	},
+	"skill-spd": {
+		"up": "22",
+		"down": "22"
+	},
+	"skill-time": {
+		"up": "9",
+		"down": "9"
+	}
+}
+}

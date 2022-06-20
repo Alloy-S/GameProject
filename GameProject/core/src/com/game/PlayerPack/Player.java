@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,14 +15,18 @@ import com.game.PlayerPack.PlayerMovement;
 import com.game.Character;
 import com.game.Bullet;
 
+import java.net.PortUnreachableException;
+
 public class Player extends Rectangle implements Character {
 
-    Texture texture;
+
     public long lastBulletSpawn;
-    public int hp;
-    public int damage;
+    private int hp;
+    private int damage;
     private boolean dead = false;
     public int movementSpeed = 300;
+    private int xp;
+    private int maxhp = 100;
 
     ApplicationAdapter applicationAdapter;
     SpriteBatch batch;
@@ -38,6 +41,14 @@ public class Player extends Rectangle implements Character {
     public boolean keyPressed;
     int stage;
     int bulSpeed;
+    int skillCount;
+    float time;
+    int invisTime;
+    boolean invis = false;
+    int maxHp;
+    private int level;
+    public boolean levelUp = false;
+
 
     public Array<Bullet> bullets;
 
@@ -55,7 +66,6 @@ public class Player extends Rectangle implements Character {
         stage = 5;
 
         player = new PlayerMovement(this, skin.getRegion("up"), skin.getRegion("down"), skin.getRegion("right"), skin.getRegion("left"), assets.manager.get("stepSound.wav", Sound.class));
-       texture = new Texture(Gdx.files.internal("kaktus.png"));
        bullets = new Array<>();
        this.x = x;
        this.y = y;
@@ -64,32 +74,73 @@ public class Player extends Rectangle implements Character {
        hp = 100;
        damage = 50;
        this.bulSpeed = 350;
+        this.xp = 0;
+        this.skillCount = 0;
+        this.invisTime = 0;
+        this.time = 0;
+        this.level = 0;
+        this.maxHp = this.hp;
 
-    }
-
-    public void update(float delta) {
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) this.x -= movementSpeed * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.D)) this.x += movementSpeed * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) this.y -= movementSpeed * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) this.y += movementSpeed * Gdx.graphics.getDeltaTime();
-
-        if (this.x > 800 - 64) this.x = 800 - 64;
-        if (this.x < -64) this.x = -64;
-        if (this.y > 600 - 64) this.y = 600 - 64;
-        if (this.y < -64) this.y = -64;
-//        System.out.println("x : " + this.x);
-//        System.out.println("y : " + this.y);
-    }
-
-    public void draw(SpriteBatch batch) {
-
-        batch.begin();
-        batch.draw(texture, x, y);
-        batch.end();
     }
 
     public void takeDamage(int damage) {
+        if(invis){
+            damage = 0;
+        }
         this.hp -= damage;
+    }
+
+    public void setInvisTime(int invisTime) {
+        this.invisTime += invisTime;
+    }
+
+    public void addSkill(){
+        this.skillCount++;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public int getSkillCount() {
+        return skillCount;
+    }
+
+    public void setMovementSpeed(int movementSpeed) {
+        this.movementSpeed = movementSpeed;
+    }
+
+    public int getMovementSpeed() {
+        return movementSpeed;
+    }
+
+    public void addXp(int xp){
+        this.xp += xp;
+        if (this.xp >= 100) {
+            this.xp -= 100;
+            this.level++;
+            this.levelUp = true;
+        }
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public int getXp() {
+        return xp;
     }
 
     @Override
@@ -97,8 +148,27 @@ public class Player extends Rectangle implements Character {
         addBullet(Gdx.input.getX(), Gdx.graphics.getHeight()- Gdx.input.getY());
     }
 
+    public void levelUp(){
+        this.level++;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
     @Override
     public void render(SpriteBatch batch) {
+
+        if (this.time < this.invisTime){
+            invis = true;
+            this.time = this.time + Gdx.graphics.getDeltaTime();
+            System.out.println(time);
+            if (this.time >= invisTime){
+                this.invis = false;
+                this.time = 0;
+                this.invisTime = 0;
+            }
+        }
 
         player.update(batch);
 
@@ -107,7 +177,7 @@ public class Player extends Rectangle implements Character {
         angle = Math.round(angle) <= 0 ? angle += 360 : angle;
         if (Math.round(angle) == 360)
             angle = 0;
-        System.out.println(angle);
+        //System.out.println(angle);
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)){
             this.x -= movementSpeed * Gdx.graphics.getDeltaTime();
@@ -132,33 +202,25 @@ public class Player extends Rectangle implements Character {
 
         if (this.x > 600 - 95) this.x = 600 - 95;
         if (this.x < 0) this.x = 0;
-        if (this.y > 800 - 95) this.y = 720 - 95;
+        if (this.y > 720 - 95) this.y = 720 - 95;
         if (this.y < 0) this.y = 0;
 
-//        if ((Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D))) {
-//            press = true;
-//            if ((Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.S) || Gdx.input.isKeyJustPressed(Input.Keys.D))) {
-//                player.setCurrentAnimation(stage);
-//            }
-//        } else {
-//            press = false;
-//        }
 
         if (!press || Gdx.input.isTouched()) {
             if (angle >= 45 && angle < 135) {
-                System.out.println("Down");
+                //System.out.println("Down");
                 player.setCurrentAnimation(PlayerMovement.stillDOWN);
                 stage = 1;
             } else if (angle >= 135 && angle < 225) {
-                System.out.println("LEFT");
+               // System.out.println("LEFT");
                 player.setCurrentAnimation(PlayerMovement.stillLEFT);
                 stage = 2;
             } else if (angle >= 225 && angle < 315) {
-                System.out.println("up");
+                //System.out.println("up");
                 player.setCurrentAnimation(PlayerMovement.stillUP);
                 stage = 3;
             } else if (angle >= 315 || angle < 45) {
-                System.out.println("RIGHT");
+                //System.out.println("RIGHT");
                 player.setCurrentAnimation(PlayerMovement.stillRIGHT);
                 stage = 0;
             }

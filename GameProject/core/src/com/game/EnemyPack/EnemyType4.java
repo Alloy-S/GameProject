@@ -1,5 +1,6 @@
 package com.game.EnemyPack;
 
+
 import com.game.Character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +21,7 @@ public class EnemyType4 extends Enemy {
     float time = 0;
 
 
+
     public EnemyType4(Character target) {
         super((Player) target);
         this.damage = 10;
@@ -32,7 +34,6 @@ public class EnemyType4 extends Enemy {
         setRandomPosition();
         position = new Vector2(this.x, this.y);
         direction = new Vector2();
-
     }
 
     @Override

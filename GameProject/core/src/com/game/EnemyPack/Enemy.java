@@ -23,6 +23,8 @@ public class Enemy extends Rectangle implements Character{
     public Array<Bullet> bullets;
     SpriteBatch batch;
     BitmapFont font;
+    private int xp;
+    private int movementSpeed;
 
 
     public Enemy(com.game.PlayerPack.Player target) {
@@ -40,11 +42,24 @@ public class Enemy extends Rectangle implements Character{
         y = MathUtils.random(60, 552);
         this.attackTime = 1000000000;
         this.bulSpeed = 500;
+        this.xp = 25;
         setRandomPosition();
     }
 
     public int getHp() {
         return hp;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public int getMovementSpeed() {
+        return movementSpeed;
+    }
+
+    public void setMovementSpeed(int movementSpeed) {
+        this.movementSpeed = movementSpeed;
     }
 
     public void render (SpriteBatch batch) {
@@ -121,6 +136,14 @@ public class Enemy extends Rectangle implements Character{
 
     public void setBulSpeed(int bulSpeed) {
         this.bulSpeed = bulSpeed;
+    }
+
+    public int getBulSpeed() {
+        return bulSpeed;
+    }
+
+    public long getAttackTime() {
+        return attackTime;
     }
 
     public void addBullet(){

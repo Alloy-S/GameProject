@@ -22,7 +22,7 @@ public class HealthBar {
         bar = new Texture("blank.png");
         batch = new SpriteBatch();
         font = new BitmapFont();
-        this.maxHp = player.hp;
+        this.maxHp = player.getHp();
     }
 
     public void render() {
@@ -31,8 +31,8 @@ public class HealthBar {
         batch.setColor(Color.RED);
         batch.draw(bar, player.x, player.y, WIDTH, HEIGHT);
         batch.setColor(Color.GREEN);
-        batch.draw(bar, player.x, player.y, WIDTH * player.hp * 0.01f, HEIGHT);
-        font.draw(batch, player.hp + "/" + maxHp, player.x + 25, player.y + 13);
+        batch.draw(bar, player.x, player.y, WIDTH * player.getHp() * 0.01f, HEIGHT);
+        font.draw(batch, player.getHp() + "/" + player.getMaxHp(), player.x + 25, player.y + 13);
         batch.end();
     }
 }
