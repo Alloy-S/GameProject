@@ -23,6 +23,7 @@ public class Menu extends ScreenAdapter {
     private Stage stage;
     private Viewport viewport;
     private Table maintable;
+    private Table soundTable;
     TextureAtlas atlas;
     protected Skin skin;
     AfterDark AssetGame;
@@ -54,6 +55,7 @@ public class Menu extends ScreenAdapter {
 
 
         if (mute == 0) {
+
             button.setDisabled(false);
             AssetGame.music.play();
         } else {
@@ -74,13 +76,18 @@ public class Menu extends ScreenAdapter {
         viewport = new ExtendViewport(600,720);
         stage = new Stage(viewport);
         maintable = new Table();
+        soundTable = new Table();
         maintable.setFillParent(true);
+        soundTable.setFillParent(true);
         maintable.setY(-100);
         stage.addActor(maintable);
+        stage.addActor(soundTable);
         AssetGame.music.play();
+        soundTable.row();
+        soundTable.setPosition(-260, 290);
 
         //tombol play
-        addButton(100, 100, "default").addListener(new ClickListener(){
+        addButton(100, 100, "default", maintable, false).addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Here we go!!!");
@@ -92,7 +99,7 @@ public class Menu extends ScreenAdapter {
         });
 
         //tombol exit
-        addButton(75, 75, "btn-exit").addListener(new ClickListener(){
+        addButton(75, 75, "btn-exit", maintable, false).addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("SAYONARA");
@@ -101,11 +108,7 @@ public class Menu extends ScreenAdapter {
             }
         });
 
-
-        button = new Button(skin, "btn-music");
-        maintable.add(button).width(75).height(75).padBottom(10).padRight(10);
-
-        button.addListener(new ClickListener() {
+        addButton(50, 50, "btn-music", soundTable, true).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 AssetGame.soundclick.play();
@@ -115,18 +118,49 @@ public class Menu extends ScreenAdapter {
                 } else {
                     mute = 0;
                 }
-
             }
         });
 
+        addButton(50, 50, "btn-sound", soundTable, true).addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                AssetGame.soundclick.play();
 
-        button.setDisabled(mute == 1);
+                if (mute == 0) {
+                    mute = 1;
+                } else {
+                    mute = 0;
+                }
+            }
+        });
+
+//        button = new Button(skin, "btn-music");
+//        maintable.add(button).width(75).height(75).padBottom(10).padRight(10);
+//
+//        button.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                AssetGame.soundclick.play();
+//
+//                if (mute == 0) {
+//                    mute = 1;
+//                } else {
+//                    mute = 0;
+//                }
+//
+//            }
+//        });
+
         Gdx.input.setInputProcessor(stage);
     }
-    private Button addButton(float width, float height, String style){
+    private Button addButton(float width, float height, String style, Table table, boolean vertikal){
         button = new Button(skin, style);
-        maintable.add(button).width(width).height(height).padBottom(10).padRight(10);
-        //maintable.row();
+        table.add(button).width(width).height(height).padBottom(10).padRight(10);
+        if (vertikal) {
+            table.row();
+
+        }
+
         return button;
     }
 

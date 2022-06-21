@@ -1,39 +1,119 @@
 {
 "com.badlogic.gdx.graphics.g2d.BitmapFont": {
-	"Snap_ITC": {
-		"file": "Snap ITC.fnt"
+	"font": {
+		"file": "font.fnt"
+	},
+	"fontlarge": {
+		"file": "fontlarge.fnt"
+	},
+	"fontlarge2": {
+		"file": "fontlarge2.fnt"
+	}
+},
+"com.badlogic.gdx.graphics.Color": {
+	"RGBA_0_0_0_255": {
+		"r": 0,
+		"g": 0,
+		"b": 0,
+		"a": 1
+	},
+	"RGBA_101_73_0_255": {
+		"r": 0.39607844,
+		"g": 0.28627452,
+		"b": 0,
+		"a": 1
+	},
+	"RGBA_130_124_94_255": {
+		"r": 0.50980395,
+		"g": 0.4862745,
+		"b": 0.36862746,
+		"a": 1
+	},
+	"RGBA_153_102_51_255": {
+		"r": 0.6,
+		"g": 0.4,
+		"b": 0.2,
+		"a": 1
+	},
+	"RGBA_162_108_56_255": {
+		"r": 0.63529414,
+		"g": 0.42352942,
+		"b": 0.21960784,
+		"a": 1
+	},
+	"RGBA_162_151_95_255": {
+		"r": 0.63529414,
+		"g": 0.5921569,
+		"b": 0.37254903,
+		"a": 1
+	},
+	"RGBA_83_56_29_255": {
+		"r": 0.3254902,
+		"g": 0.21960784,
+		"b": 0.11372549,
+		"a": 1
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
 	"default": {
-		"up": "2",
-		"down": "2"
+		"up": "HEAL",
+		"down": "HEAL-down",
+		"over": "HEAL-hover"
 	},
 	"skill-atkSpd": {
-		"up": "1",
-		"down": "1"
+		"up": "30",
+		"down": "30-down",
+		"over": "30-hover"
 	},
 	"skill-atkdmg": {
-		"up": "6",
-		"down": "6"
+		"up": "25",
+		"down": "25-down",
+		"over": "25-hover"
 	},
 	"skill-invisible": {
 		"up": "19",
-		"down": "19"
+		"down": "19-down",
+		"over": "19-hover"
 	},
 	"skill-spd": {
-		"up": "22",
-		"down": "22"
+		"up": "speed",
+		"down": "speed-down",
+		"over": "speed-hover"
 	},
 	"skill-time": {
-		"up": "9",
-		"down": "9"
+		"up": "time",
+		"down": "time-down",
+		"over": "time-hover"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+	"default": {
+		"font": "fontlarge",
+		"fontColor": "RGBA_153_102_51_255",
+		"downFontColor": "RGBA_101_73_0_255",
+		"overFontColor": "RGBA_162_151_95_255",
+		"up": "rectangle1",
+		"down": "rectangle3",
+		"over": "rectangle2"
+	},
+	"btn-small": {
+		"font": "fontlarge",
+		"fontColor": "RGBA_162_108_56_255",
+		"downFontColor": "RGBA_83_56_29_255",
+		"overFontColor": "RGBA_130_124_94_255",
+		"up": "square1",
+		"down": "square3",
+		"over": "square2"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
 	"default": {
 		"background": "widowskill",
-		"titleFont": "Snap_ITC"
+		"titleFont": "font"
+	},
+	"window-vertikal": {
+		"background": "Windows-vertikal",
+		"titleFont": "font"
 	}
 }
 }

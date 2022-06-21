@@ -48,8 +48,6 @@ public class Player extends Rectangle implements Character {
     int maxHp;
     private int level;
     public boolean levelUp = false;
-
-
     public Array<Bullet> bullets;
 
     public Player(float x, float y) {

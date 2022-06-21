@@ -1,0 +1,12 @@
+
+beeMove.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+beeMove
+  rotate: false
+  xy: 1, 1
+  size: 280, 94
+  orig: 280, 94
+  offset: 0, 0
+  index: -1

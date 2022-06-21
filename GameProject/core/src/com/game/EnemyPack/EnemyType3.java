@@ -32,7 +32,7 @@ public class EnemyType3 extends Enemy {
         super.setDamage(25);
         this.height = 16;
         this.width = 16;
-        this.moveSpeed = 50;
+        this.moveSpeed = 150;
         setRandomPosition();
 
         position = new Vector2(this.x, this.y);

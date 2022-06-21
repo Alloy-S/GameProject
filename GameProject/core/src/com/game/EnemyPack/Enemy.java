@@ -1,5 +1,7 @@
 package com.game.EnemyPack;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.game.Character;
 import com.game.Bullet;
 
@@ -25,6 +27,9 @@ public class Enemy extends Rectangle implements Character{
     BitmapFont font;
     private int xp;
     private int movementSpeed;
+    private AssetBee assetBee;
+    private BeeMovement beeMovement;
+    Skin skin;
 
 
     public Enemy(com.game.PlayerPack.Player target) {
@@ -44,6 +49,15 @@ public class Enemy extends Rectangle implements Character{
         this.bulSpeed = 500;
         this.xp = 25;
         setRandomPosition();
+
+        assetBee = new AssetBee();
+        assetBee.load();
+        assetBee.manager.finishLoading();
+
+        skin = new Skin();
+        skin.addRegions(assetBee.manager.get("beeMove.pack", TextureAtlas.class));
+
+        beeMovement = new BeeMovement(this, skin.getRegion("beeMove"));
     }
 
     public int getHp() {
@@ -64,7 +78,7 @@ public class Enemy extends Rectangle implements Character{
 
     public void render (SpriteBatch batch) {
         //bacth.draw();
-        batch.draw(texture, x, y);
+        beeMovement.update(batch);
         displayHp(batch);
     }
 

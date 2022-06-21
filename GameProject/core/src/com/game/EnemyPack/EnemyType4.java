@@ -1,6 +1,8 @@
 package com.game.EnemyPack;
 
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.game.Character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,7 +21,6 @@ public class EnemyType4 extends Enemy {
     int damage;
     boolean hide = false;
     float time = 0;
-
 
 
     public EnemyType4(Character target) {
