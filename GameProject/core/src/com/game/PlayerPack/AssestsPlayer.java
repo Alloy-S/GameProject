@@ -13,6 +13,5 @@ class AssetsPlayer {
             manager = new AssetManager();
         }
         manager.load("Movement.pack",  TextureAtlas.class);
-        manager.load("stepSound.wav",  Sound.class);
     }
 }

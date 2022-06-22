@@ -72,6 +72,8 @@ public class GameScreen  implements Screen{
     public float delay;
     public int stageGame;
     public Sound diedSound;
+    public Sound playerDied;
+    public Sound winSound;
 
 
     public GameScreen(final AfterDark game, String fileMapName) {
@@ -89,7 +91,8 @@ public class GameScreen  implements Screen{
         enemies = new Array<Enemy>();
         bullets = player.bullets;
 
-
+        winSound = Gdx.audio.newSound(Gdx.files.internal("win.wav"));
+        playerDied = Gdx.audio.newSound(Gdx.files.internal("player-died.wav"));
         diedSound = Gdx.audio.newSound(Gdx.files.internal("died.wav"));
         atlas = new TextureAtlas("button/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("button/uiskin.json"),atlas);
@@ -196,6 +199,7 @@ public class GameScreen  implements Screen{
 
                 //jika player mati maka kembali ke menu pemilihan level
                 if (player.isDead()) {
+                    playerDied.play();
                     game.setScreen(new LevelMenu(game));
                 }
 
@@ -211,6 +215,7 @@ public class GameScreen  implements Screen{
                     if (delay >= 1.5f) {
                         stageGame++;
                         if (stageGame == 3) {
+                            winSound.play();
                             dispose();
                             game.setScreen(new LevelMenu(game));
                         }

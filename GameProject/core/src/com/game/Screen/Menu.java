@@ -28,14 +28,12 @@ public class Menu extends ScreenAdapter {
     Button button;
     Button soundButton;
     Button musicButton;
-    BitmapFont menuFont;
     private Texture title;
 
     public Menu(AfterDark AssetGame){
         this.AssetGame = AssetGame;
         AssetGame.music.setVolume(0.2f);
         AssetGame.music.setLooping(true);
-        menuFont = new BitmapFont(Gdx.files.internal("snap ITC.fnt"));
         title = new Texture("title.png");
 
     }
