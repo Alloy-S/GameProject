@@ -15,9 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.game.PlayerPack.LevelMenu;
 
 public class Menu extends ScreenAdapter {
     private Stage stage;
@@ -27,17 +29,20 @@ public class Menu extends ScreenAdapter {
     TextureAtlas atlas;
     protected Skin skin;
     AfterDark AssetGame;
-    Texture bg;
     int mute;
     Button button;
+    Button soundButton;
+    Button musicButton;
     BitmapFont menuFont;
+    private Texture title;
 
     public Menu(AfterDark AssetGame){
         this.AssetGame = AssetGame;
-        bg = new Texture("forest3.png");
+        //bg = new Texture("forest3.png");
         AssetGame.music.setVolume(0.2f);
         AssetGame.music.setLooping(true);
         menuFont = new BitmapFont(Gdx.files.internal("snap ITC.fnt"));
+        title = new Texture("title.png");
 
     }
     @Override
@@ -46,9 +51,10 @@ public class Menu extends ScreenAdapter {
         Gdx.gl.glClearColor(.1f,.1f,.15f,1);
 //        menuFont.setColor(Color.RED);
         AssetGame.batch.begin();
-        AssetGame.batch.draw(bg, 0, 0);
-        GlyphLayout menuLayout = new GlyphLayout(menuFont, "Welcome to the jungle");
-        menuFont.draw(AssetGame.batch, menuLayout, 100, 500);
+        AssetGame.batch.draw(AssetGame.bg, 0, 0);
+        AssetGame.batch.draw(title, -15, 310, 600, 300);
+//        GlyphLayout menuLayout = new GlyphLayout(menuFont, "Welcome to the jungle");
+//        menuFont.draw(AssetGame.batch, menuLayout, 100, 500);
         AssetGame.batch.end();
         stage.act();
         stage.draw();
@@ -56,10 +62,10 @@ public class Menu extends ScreenAdapter {
 
         if (mute == 0) {
 
-            button.setDisabled(false);
+            musicButton.setDisabled(false);
             AssetGame.music.play();
         } else {
-            button.setDisabled(true);
+            musicButton.setDisabled(true);
             AssetGame.music.pause();
         }
     }
@@ -83,7 +89,6 @@ public class Menu extends ScreenAdapter {
         stage.addActor(maintable);
         stage.addActor(soundTable);
         AssetGame.music.play();
-        soundTable.row();
         soundTable.setPosition(-260, 290);
 
         //tombol play
@@ -93,7 +98,8 @@ public class Menu extends ScreenAdapter {
                 System.out.println("Here we go!!!");
                 AssetGame.soundclick.play();
                 dispose();
-                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenLoading(AssetGame));
+                AssetGame.setScreen(new LevelMenu(AssetGame));
+//                    ((Game) Gdx.app.getApplicationListener()).setScreen(new ScreenLoading(AssetGame));
 
             }
         });
@@ -108,11 +114,25 @@ public class Menu extends ScreenAdapter {
             }
         });
 
-        addButton(50, 50, "btn-music", soundTable, true).addListener(new ClickListener() {
+
+        soundButton = new Button(skin, "btn-sound");
+        soundTable.row();
+        soundTable.add(soundButton).width(50).height(50).padBottom(10);
+        musicButton = new Button(skin, "btn-music");
+        soundTable.row();
+        soundTable.add(musicButton).width(50).height(50);
+
+        soundButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 AssetGame.soundclick.play();
+            }
+        });
 
+        musicButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                AssetGame.soundclick.play();
                 if (mute == 0) {
                     mute = 1;
                 } else {
@@ -121,20 +141,7 @@ public class Menu extends ScreenAdapter {
             }
         });
 
-        addButton(50, 50, "btn-sound", soundTable, true).addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                AssetGame.soundclick.play();
 
-                if (mute == 0) {
-                    mute = 1;
-                } else {
-                    mute = 0;
-                }
-            }
-        });
-
-//        button = new Button(skin, "btn-music");
 //        maintable.add(button).width(75).height(75).padBottom(10).padRight(10);
 //
 //        button.addListener(new ClickListener() {
@@ -158,7 +165,6 @@ public class Menu extends ScreenAdapter {
         table.add(button).width(width).height(height).padBottom(10).padRight(10);
         if (vertikal) {
             table.row();
-
         }
 
         return button;
@@ -166,6 +172,6 @@ public class Menu extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        bg.dispose();
+        stage.dispose();
     }
 }

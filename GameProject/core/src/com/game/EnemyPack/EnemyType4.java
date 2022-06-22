@@ -3,6 +3,7 @@ package com.game.EnemyPack;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.game.Character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,10 +22,13 @@ public class EnemyType4 extends Enemy {
     int damage;
     boolean hide = false;
     float time = 0;
+    private BatMovement batMovement;
+    private Skin skin;
+    private Assets assets;
 
 
-    public EnemyType4(Character target) {
-        super((Player) target);
+    public EnemyType4(Player target, Array obj) {
+        super(target, obj);
         this.damage = 10;
         super.setAttackTime(1000000000);
         this.bulSpeed = 200;
@@ -35,6 +39,15 @@ public class EnemyType4 extends Enemy {
         setRandomPosition();
         position = new Vector2(this.x, this.y);
         direction = new Vector2();
+
+        assets = new Assets();
+        assets.load("batMove.pack");
+        assets.manager.finishLoading();
+
+        skin = new Skin();
+        skin.addRegions(assets.manager.get("batMove.pack", TextureAtlas.class));
+
+        batMovement = new BatMovement(this, skin.getRegion("batMove"));
     }
 
     @Override
@@ -96,7 +109,7 @@ public class EnemyType4 extends Enemy {
     public void render(SpriteBatch batch){
         move();
         if(!this.hide) {
-            super.render(batch);
+            batMovement.update(batch);
         }
     }
 

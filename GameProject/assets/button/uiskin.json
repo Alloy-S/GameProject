@@ -140,7 +140,7 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
 	"default": {
-		"font": "fontlarge",
+		"font": "font",
 		"fontColor": "RGBA_153_102_51_255",
 		"downFontColor": "RGBA_101_73_0_255",
 		"overFontColor": "RGBA_162_151_95_255",
@@ -149,7 +149,7 @@
 		"over": "rectangle2"
 	},
 	"btn-small": {
-		"font": "fontlarge",
+		"font": "font",
 		"fontColor": "RGBA_162_108_56_255",
 		"downFontColor": "RGBA_83_56_29_255",
 		"overFontColor": "RGBA_130_124_94_255",

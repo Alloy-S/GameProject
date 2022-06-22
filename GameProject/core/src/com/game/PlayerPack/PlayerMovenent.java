@@ -194,7 +194,7 @@ class PlayerMovement {
         currentFrame = (TextureRegion) animations[currentAnimation].getKeyFrame(stateTime, true);
 
         //batch.begin();
-        batch.draw(currentFrame, player.x, player.y);
+        batch.draw(currentFrame, player.x - 32, player.y - 5);
         //batch.end();
     }
 }

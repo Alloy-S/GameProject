@@ -12,6 +12,7 @@ public class AfterDark extends Game {
 	public BitmapFont font;
 	public Music music;
 	public Sound soundclick;
+	public Texture bg;
 
 	@Override
 	public void create() {
@@ -19,6 +20,7 @@ public class AfterDark extends Game {
 		font = new BitmapFont(); // use libGDX's default Arial font
 		soundclick = Gdx.audio.newSound(Gdx.files.internal("button-click.wav"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("bgm.wav"));
+		bg = new Texture("forest3.png");
 
 		this.setScreen(new Menu(this));
 	}

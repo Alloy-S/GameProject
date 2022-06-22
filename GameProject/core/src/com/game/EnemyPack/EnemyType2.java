@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.game.EnemyPack.Enemy;
 import com.game.PlayerPack.Player;
 import com.game.Bullet;
@@ -16,11 +17,11 @@ public class EnemyType2 extends Enemy {
     int distance = 100;
     int mode;
     private MageMovement mage;
-    private AssetMage assetMage;
+    private Assets assetMage;
     private Skin skin;
 
-    public EnemyType2(Player target) {
-        super(target);
+    public EnemyType2(Player target, Array obj) {
+        super(target, obj);
         /*
         bulspeed adalah kecepatan peluru
         attack time adalah banyaknya serangan perdetik
@@ -34,8 +35,8 @@ public class EnemyType2 extends Enemy {
         maxY = this.y + distance;
         minY = this.y - distance;
 
-        assetMage = new AssetMage();
-        assetMage.load();
+        assetMage = new Assets();
+        assetMage.load("mageMovement.pack");
         assetMage.manager.finishLoading();
         skin = new Skin();
         skin.addRegions(assetMage.manager.get("mageMovement.pack", TextureAtlas.class));

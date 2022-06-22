@@ -19,9 +19,9 @@ public class MageMovement {
     private TextureRegion currentFrame;
     private Animation[] animations;
     private int currentAnimation;
-    private EnemyType2 mage;
+    private Enemy mage;
 
-    public MageMovement(EnemyType2 mage, TextureRegion textureRegionWalk){
+    public MageMovement(Enemy mage, TextureRegion textureRegionWalk){
         this.mage = mage;
         TextureRegion[][] tmp = textureRegionWalk.split(textureRegionWalk.getRegionWidth() / WFRAME_COLS,
                 textureRegionWalk.getRegionHeight() / WFRAME_ROWS);

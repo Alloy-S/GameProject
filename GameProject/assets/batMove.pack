@@ -1,0 +1,12 @@
+
+batMove.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+batMove
+  rotate: false
+  xy: 1, 1
+  size: 238, 77
+  orig: 238, 77
+  offset: 0, 0
+  index: -1

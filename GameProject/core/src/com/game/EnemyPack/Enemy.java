@@ -27,15 +27,17 @@ public class Enemy extends Rectangle implements Character{
     BitmapFont font;
     private int xp;
     private int movementSpeed;
-    private AssetBee assetBee;
+    private Assets assetBee;
     private BeeMovement beeMovement;
     Skin skin;
+    Array<Rectangle> obj;
 
 
-    public Enemy(com.game.PlayerPack.Player target) {
+    public Enemy(com.game.PlayerPack.Player target, Array<Rectangle> obj) {
         if (texture == null) {
             texture = new Texture("monster-icon.png");
         }
+        this.obj = obj;
         font = new BitmapFont();
         batch = new SpriteBatch();
         this.target = target;
@@ -50,8 +52,8 @@ public class Enemy extends Rectangle implements Character{
         this.xp = 25;
         setRandomPosition();
 
-        assetBee = new AssetBee();
-        assetBee.load();
+        assetBee = new Assets();
+        assetBee.load("beeMove.pack");
         assetBee.manager.finishLoading();
 
         skin = new Skin();
@@ -98,21 +100,27 @@ public class Enemy extends Rectangle implements Character{
                 addBullet();
             }
         }else {
-            for (Bullet bullet : bullets) {
-                bullet.render(batch);
-                if (TimeUtils.nanoTime() - lastBulletSpawn > attackTime) addBullet();
 
-                if (bullet.overlaps((Rectangle) target)) {
-                    target.takeDamage(this.damage);
-                    removeBullet(bullet);
-                }
+                for (Bullet bullet : bullets) {
+                    bullet.render(batch);
+                    if (TimeUtils.nanoTime() - lastBulletSpawn > attackTime) addBullet();
 
-                if(bullet.position.x<0 || bullet.position.x > 600-16 || bullet.position.y > 720-16
-                        || bullet.position.y<0){
-                    removeBullet(bullet);
+                    if (bullet.overlaps((Rectangle) target)) {
+                        target.takeDamage(this.damage);
+                        removeBullet(bullet);
+                    }
+                    for (Rectangle wall: obj) {
+                        if (bullet.overlaps(wall)) {
+                            removeBullet(bullet);
+                        }
+                    }
+                    if (bullet.position.x < 0 || bullet.position.x > 600 - 16 || bullet.position.y > 720 - 16
+                            || bullet.position.y < 0) {
+                        removeBullet(bullet);
+                    }
                 }
             }
-        }
+
         batch.end();
     }
 

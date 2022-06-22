@@ -16,6 +16,7 @@ public class Bullet extends Rectangle {
     public Vector2 direction;
     public Vector2 position;
     private int damage;
+    private boolean doubleAtk = false;
 
     public boolean remove = false;
 
@@ -56,11 +57,14 @@ public class Bullet extends Rectangle {
         position.y += direction.y * bulSpeed * Gdx.graphics.getDeltaTime();
         this.x = position.x;
         this.y = position.y;
-        bacth.draw(texture, position.x, position.y);
+        bacth.draw(texture, position.x, position.y, 24, 24);
     }
-
 
     public int getDamage() {
         return damage;
+    }
+
+    public static void setTexture(Texture texture) {
+        Bullet.texture = texture;
     }
 }

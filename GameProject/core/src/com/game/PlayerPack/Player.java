@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,7 +20,8 @@ import java.net.PortUnreachableException;
 
 public class Player extends Rectangle implements Character {
 
-
+    private boolean newBul = false;
+    private boolean doubleAtk = false;
     public long lastBulletSpawn;
     private int hp;
     private int damage;
@@ -67,8 +69,8 @@ public class Player extends Rectangle implements Character {
        bullets = new Array<>();
        this.x = x;
        this.y = y;
-       this.width = 64;
-       this.height = 64;
+       this.width = 45;
+       this.height = 45;
        hp = 100;
        damage = 50;
        this.bulSpeed = 350;
@@ -112,6 +114,18 @@ public class Player extends Rectangle implements Character {
         return movementSpeed;
     }
 
+    public boolean isNewBul() {
+        return newBul;
+    }
+
+    public void setNewBul() {
+        this.newBul = true;
+    }
+
+    public void setDoubleAtk() {
+        this.doubleAtk = true;
+    }
+
     public void addXp(int xp){
         this.xp += xp;
         if (this.xp >= 100) {
@@ -144,6 +158,7 @@ public class Player extends Rectangle implements Character {
     @Override
     public void attack() {
         addBullet(Gdx.input.getX(), Gdx.graphics.getHeight()- Gdx.input.getY());
+
     }
 
     public void levelUp(){
@@ -227,10 +242,27 @@ public class Player extends Rectangle implements Character {
     }
 
     public void addBullet(float targetx, float targety){
-        Bullet bullet = new Bullet(x, y, targetx, targety);
-        bullet.setDamage(damage);
-        bullet.setBulSpeed(this.bulSpeed);
-        bullets.add(bullet);
+        if (this.doubleAtk) {
+            Bullet bullet1 = new Bullet(x - 15, y, targetx - 15, targety);
+            Bullet bullet2 = new Bullet(x + 15, y, targetx + 15, targety);
+            bullet1.setDamage(damage);
+            bullet2.setDamage(damage);
+            bullet1.setBulSpeed(this.bulSpeed);
+            bullet2.setBulSpeed(this.bulSpeed);
+            if (newBul) {
+                bullet1.setTexture(new Texture("skill/newBull.png"));
+                bullet2.setTexture(new Texture("skill/newBull.png"));
+            }
+            bullets.add(bullet1, bullet2);
+        } else {
+            Bullet bullet = new Bullet(x, y, targetx, targety);
+            bullet.setDamage(damage);
+            bullet.setBulSpeed(this.bulSpeed);
+            if (newBul) {
+                bullet.setTexture(new Texture("skill/newBull.png"));
+            }
+            bullets.add(bullet);
+        }
         lastBulletSpawn = TimeUtils.nanoTime();
     }
 

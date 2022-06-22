@@ -24,7 +24,7 @@ public class GoblinMovement {
     public static final int UP = 3;
 
     private float stateTime = 0;
-    private EnemyType3 goblin;
+    private Enemy goblin;
 
     //animasi jalan dan diam
     private Animation<TextureRegion> upAnimation;
@@ -62,7 +62,7 @@ public class GoblinMovement {
     private Animation[] animations;
     private int currentAnimation;
 
-    public GoblinMovement(EnemyType3 goblin, TextureRegion textureRegionUp, TextureRegion textureRegionDown, TextureRegion textureRegionLeft, TextureRegion textureRegionRight, TextureRegion textureRegionAttUp, TextureRegion textureRegionAttDown, TextureRegion textureRegionAttLeft, TextureRegion textureRegionAttRight,
+    public GoblinMovement(Enemy goblin, TextureRegion textureRegionUp, TextureRegion textureRegionDown, TextureRegion textureRegionLeft, TextureRegion textureRegionRight, TextureRegion textureRegionAttUp, TextureRegion textureRegionAttDown, TextureRegion textureRegionAttLeft, TextureRegion textureRegionAttRight,
                   TextureRegion textureRegionDead){
         this.goblin = goblin;
         //still Left

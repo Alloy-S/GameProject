@@ -2,6 +2,7 @@ package com.game.EnemyPack;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.game.Character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,7 +18,7 @@ public class EnemyType3 extends Enemy {
     float length;
     private GoblinMovement goblin;
     private Skin skin;
-    private AssetsGoblin assetsGoblin;
+    private Assets assetsGoblin;
     float angleRad;
     float angle;
     int stage;
@@ -26,8 +27,8 @@ public class EnemyType3 extends Enemy {
     int attackCount;
     float attackTime;
 
-    public EnemyType3(Character target) {
-        super((Player) target);
+    public EnemyType3(Player target, Array obj) {
+        super(target, obj);
         super.setHp(100);
         super.setDamage(25);
         this.height = 16;
@@ -37,8 +38,8 @@ public class EnemyType3 extends Enemy {
 
         position = new Vector2(this.x, this.y);
         direction = new Vector2();
-        assetsGoblin = new AssetsGoblin();
-        assetsGoblin.load();
+        assetsGoblin = new Assets();
+        assetsGoblin.load("goblinMovement.pack");
         assetsGoblin.manager.finishLoading();
         skin = new Skin();
         skin.addRegions(assetsGoblin.manager.get("goblinMovement.pack", TextureAtlas.class));

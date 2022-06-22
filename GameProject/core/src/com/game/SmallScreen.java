@@ -31,12 +31,14 @@ public class SmallScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(.1f,.1f,.15f,1);
+
+
+        //game.batch.draw(game.bg, 0, 0);
 
         stage.act();
         stage.draw();
         Gdx.input.setInputProcessor(stage);
+
     }
 
     @Override
@@ -46,13 +48,17 @@ public class SmallScreen extends ScreenAdapter {
 
     @Override
     public void show(){
-        atlas = new TextureAtlas("button/btn-skin.atlas");
-        skin = new Skin(Gdx.files.internal("button/btn-skin.json"),atlas);
+        atlas = new TextureAtlas("button/uiskin.atlas");
+        skin = new Skin(Gdx.files.internal("button/uiskin.json"),atlas);
         viewport = new ExtendViewport(600,720);
         stage = new Stage(viewport);
         maintable = new Table();
         maintable.setFillParent(true);
         stage.addActor(maintable);
+
+        TextButton resume = new TextButton("Resume", skin, "default");
+
+        maintable.add(resume).width(200).height(100).padBottom(20).row();
         addButton(50, 50, "default").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
