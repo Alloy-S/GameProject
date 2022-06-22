@@ -237,7 +237,7 @@ public class GameScreen  implements Screen{
                         for (Bullet bullet : player.bullets) {
                             if (bullet.overlaps(wall)) {
                                 player.removeBullet(bullet);
-                                System.out.println("nabrak");
+
                             }
                         }
                     }

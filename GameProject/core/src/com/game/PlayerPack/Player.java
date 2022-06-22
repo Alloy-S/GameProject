@@ -183,7 +183,7 @@ public class Player extends Rectangle implements Character {
             batch.draw(shieldImage, this.x-65, this.y,170,105);
 
             this.time = this.time + Gdx.graphics.getDeltaTime();
-            System.out.println(time);
+            //System.out.println(time);
             if (this.time >= invisTime) {
                 this.invis = false;
                 this.time = 0;

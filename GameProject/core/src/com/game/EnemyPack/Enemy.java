@@ -90,12 +90,9 @@ public class Enemy extends Rectangle implements Character{
     public void render (SpriteBatch batch) {
         //bacth.draw();
         beeMovement.update(batch);
-        displayHp(batch);
     }
 
-    public void displayHp(SpriteBatch batch) {
-        font.draw(batch, "HP = " + this.hp, this.x, this.y);
-    }
+
 
     public void takeDamage(int damage) {
         this.hp -= damage;
