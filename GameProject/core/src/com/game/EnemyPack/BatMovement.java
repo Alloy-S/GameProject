@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+@SuppressWarnings("unchecked")
 public class BatMovement {
     //jumlah frame tetap
     private static final int WFRAME_COLS = 3; //kesamping
@@ -53,7 +54,7 @@ public class BatMovement {
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = (TextureRegion) stillAnimation.getKeyFrame(stateTime, true);
 
-        batch.draw(currentFrame, bat.x, bat.y);
+        batch.draw(currentFrame, bat.x - 16, bat.y - 16);
 
     }
 }

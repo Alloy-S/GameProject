@@ -62,8 +62,7 @@ public class GoblinMovement {
     private Animation[] animations;
     private int currentAnimation;
 
-    public GoblinMovement(Enemy goblin, TextureRegion textureRegionUp, TextureRegion textureRegionDown, TextureRegion textureRegionLeft, TextureRegion textureRegionRight, TextureRegion textureRegionAttUp, TextureRegion textureRegionAttDown, TextureRegion textureRegionAttLeft, TextureRegion textureRegionAttRight,
-                  TextureRegion textureRegionDead){
+    public GoblinMovement(Enemy goblin, TextureRegion textureRegionUp, TextureRegion textureRegionDown, TextureRegion textureRegionLeft, TextureRegion textureRegionRight, TextureRegion textureRegionAttUp, TextureRegion textureRegionAttDown, TextureRegion textureRegionAttLeft, TextureRegion textureRegionAttRight){
         this.goblin = goblin;
         //still Left
         TextureRegion[][] tmp = textureRegionLeft.split(textureRegionLeft.getRegionWidth() / WFRAME_COLS,
@@ -222,21 +221,8 @@ public class GoblinMovement {
         attackLeftAnimation = new Animation(0.25f, (Object[]) attackLeftFrames);
         attackLeftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        //dead
-        tmp = textureRegionDead.split(textureRegionDead.getRegionWidth() / DFRAME_COLS,
-                textureRegionDead.getRegionHeight() / DFRAME_ROWS);
-        deadFrames = new TextureRegion[DFRAME_COLS * DFRAME_ROWS];
-        index = 0;
-        for (int i = 0; i < DFRAME_ROWS; i++) {
-            for (int j = 0; j < DFRAME_COLS; j++) {
-                deadFrames[index++] = tmp[i][j];
-            }
-        }
-        deadAnimation = new Animation(0.25f, (Object[]) deadFrames);
-        deadAnimation.setPlayMode(Animation.PlayMode.LOOP);
-
         // Array of Animations
-        animations = new Animation[13];
+        animations = new Animation[12];
         animations[0] = leftAnimation;
         animations[1] = downAnimation;
         animations[2] = rightAnimation;
@@ -249,7 +235,6 @@ public class GoblinMovement {
         animations[9] = attackDownAnimation;
         animations[10] = attackRightAnimation;
         animations[11] = attackUpAnimation;
-        animations[12] = deadAnimation;
 
         // Initial currentAnimation
         setCurrentAnimation(7);
@@ -265,8 +250,6 @@ public class GoblinMovement {
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = (TextureRegion) animations[currentAnimation].getKeyFrame(stateTime, true);
 
-//        batch.begin();
-        batch.draw(currentFrame, goblin.x, goblin.y);
-//        batch.end();
+        batch.draw(currentFrame, goblin.x - 16, goblin.y);
     }
 }

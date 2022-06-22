@@ -1,8 +1,8 @@
 package com.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 
+//untuk method dasar dari player dan monster
 public interface Character {
     void takeDamage(int damage);
     public void attack();

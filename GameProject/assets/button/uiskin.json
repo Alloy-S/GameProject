@@ -146,7 +146,8 @@
 		"overFontColor": "RGBA_162_151_95_255",
 		"up": "rectangle1",
 		"down": "rectangle3",
-		"over": "rectangle2"
+		"over": "rectangle2",
+		"disabled": "rectangle4"
 	},
 	"btn-small": {
 		"font": "font",
@@ -155,16 +156,13 @@
 		"overFontColor": "RGBA_130_124_94_255",
 		"up": "square1",
 		"down": "square3",
-		"over": "square2"
+		"over": "square2",
+		"disabled": "square4"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
 	"default": {
-		"background": "widowskill",
-		"titleFont": "font"
-	},
-	"window-vertikal": {
-		"background": "Windows-vertikal",
+		"background": "window-skill",
 		"titleFont": "font"
 	}
 }

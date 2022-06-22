@@ -10,9 +10,10 @@ import com.badlogic.gdx.math.Vector2;
 import javax.xml.stream.events.StartDocument;
 import java.nio.file.attribute.UserPrincipal;
 
+//untuk menampung dan load bullet
 public class Bullet extends Rectangle {
     public int bulSpeed = 500;
-    private static Texture texture;
+    private Texture texture;
     public Vector2 direction;
     public Vector2 position;
     private int damage;
@@ -44,6 +45,7 @@ public class Bullet extends Rectangle {
 
         direction.x = targetx - position.x;
         direction.y = targety - position.y;
+        //hitung jarak antara posisi bullet dengan target
         float length = (float) Math.sqrt((direction.x * direction.x) + (direction.y * direction.y));
 
         if (length != 0) {
@@ -64,7 +66,7 @@ public class Bullet extends Rectangle {
         return damage;
     }
 
-    public static void setTexture(Texture texture) {
-        Bullet.texture = texture;
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 }

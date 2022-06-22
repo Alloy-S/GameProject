@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 @SuppressWarnings("unchecked")
+//penyimpanan gerakan player
 class PlayerMovement {
     private static final int FRAME_COLS = 7; //kesamping
     private static final int FRAME_ROWS = 1; //kebawah
@@ -41,14 +42,15 @@ class PlayerMovement {
     private TextureRegion currentFrame;
     private Animation[] animations;
 
-    private Sound stepSound;
+    
+    
     private int stepIndex = 0;
     private Player player;
 
-    public PlayerMovement(Player player, TextureRegion textureRegionUp, TextureRegion textureRegionDown, TextureRegion textureRegionLeft, TextureRegion textureRegionRight, Sound stepSound) {
+    public PlayerMovement(Player player, TextureRegion textureRegionUp, TextureRegion textureRegionDown, TextureRegion textureRegionLeft, TextureRegion textureRegionRight) {
+        //membuat animation dengan loop texture dalam pack
         this.player = player;
-        this.stepSound = stepSound;
-
+        
         //still Left
         TextureRegion[][] tmp = textureRegionLeft.split(textureRegionLeft.getRegionWidth() / FRAME_COLS,
                 textureRegionLeft.getRegionHeight() / FRAME_ROWS);
@@ -182,7 +184,7 @@ class PlayerMovement {
     public void update(SpriteBatch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
 
-//        //untuk mengatur suara step ketika lari agar lbh cepat
+
 //        if(animations[currentAnimation].getKeyFrameIndex(stateTime) != stepIndex){
 //            if(animations[currentAnimation].getKeyFrameIndex(stateTime) == 0
 //                    || animations[currentAnimation].getKeyFrameIndex(stateTime) == 12) {

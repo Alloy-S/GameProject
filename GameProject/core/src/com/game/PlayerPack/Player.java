@@ -18,6 +18,7 @@ import com.game.Bullet;
 
 import java.net.PortUnreachableException;
 
+//semua yang terjadi pada player (invisible, dapat exp, take damage, upgrade bullet, )
 public class Player extends Rectangle implements Character {
 
     private boolean newBul = false;
@@ -51,6 +52,7 @@ public class Player extends Rectangle implements Character {
     private int level;
     public boolean levelUp = false;
     public Array<Bullet> bullets;
+    public Texture shieldImage;
 
     public Player(float x, float y) {
         batch = new SpriteBatch();
@@ -60,20 +62,21 @@ public class Player extends Rectangle implements Character {
         assets.load();
         assets.manager.finishLoading();
 
-        skin = new Skin();
+        skin = new Skin();//untuk menampung texture
         skin.addRegions(assets.manager.get("Movement.pack", TextureAtlas.class));
 
         stage = 5;
 
-        player = new PlayerMovement(this, skin.getRegion("up"), skin.getRegion("down"), skin.getRegion("right"), skin.getRegion("left"), assets.manager.get("stepSound.wav", Sound.class));
-       bullets = new Array<>();
-       this.x = x;
-       this.y = y;
-       this.width = 45;
-       this.height = 45;
-       hp = 100;
-       damage = 50;
-       this.bulSpeed = 350;
+        //untuk mengambil frame" gerakan dengan nama dalam pack
+        player = new PlayerMovement(this, skin.getRegion("up"), skin.getRegion("down"), skin.getRegion("right"), skin.getRegion("left"));
+        bullets = new Array<>();
+        this.x = x;
+        this.y = y;
+        this.width = 45;
+        this.height = 45;
+        hp = 100;
+        damage = 50;
+        this.bulSpeed = 250;
         this.xp = 0;
         this.skillCount = 0;
         this.invisTime = 0;
@@ -81,10 +84,12 @@ public class Player extends Rectangle implements Character {
         this.level = 0;
         this.maxHp = this.hp;
 
+        shieldImage = new Texture(Gdx.files.internal("shieldEnergy.png"));
     }
 
     public void takeDamage(int damage) {
-        if(invis){
+        //jika invisible damage yang diterima =0
+        if (invis) {
             damage = 0;
         }
         this.hp -= damage;
@@ -94,7 +99,7 @@ public class Player extends Rectangle implements Character {
         this.invisTime += invisTime;
     }
 
-    public void addSkill(){
+    public void addSkill() {
         this.skillCount++;
     }
 
@@ -126,7 +131,8 @@ public class Player extends Rectangle implements Character {
         this.doubleAtk = true;
     }
 
-    public void addXp(int xp){
+    //penambahan exp player
+    public void addXp(int xp) {
         this.xp += xp;
         if (this.xp >= 100) {
             this.xp -= 100;
@@ -157,11 +163,11 @@ public class Player extends Rectangle implements Character {
 
     @Override
     public void attack() {
-        addBullet(Gdx.input.getX(), Gdx.graphics.getHeight()- Gdx.input.getY());
+        addBullet(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
     }
 
-    public void levelUp(){
+    public void levelUp() {
         this.level++;
     }
 
@@ -171,28 +177,31 @@ public class Player extends Rectangle implements Character {
 
     @Override
     public void render(SpriteBatch batch) {
-
-        if (this.time < this.invisTime){
+        //cek jika waktu sekarang kurang dari waktu invis, maka invis true
+        if (this.time < this.invisTime) {
             invis = true;
+            batch.draw(shieldImage, this.x-65, this.y,170,105);
+
             this.time = this.time + Gdx.graphics.getDeltaTime();
             System.out.println(time);
-            if (this.time >= invisTime){
+            if (this.time >= invisTime) {
                 this.invis = false;
                 this.time = 0;
                 this.invisTime = 0;
             }
         }
 
+
         player.update(batch);
 
-        angleRad = (float) (Math.atan2(Gdx.input.getX() - this.x,Gdx.graphics.getHeight()- Gdx.input.getY() - this.y));
+        angleRad = (float) (Math.atan2(Gdx.input.getX() - this.x, Gdx.graphics.getHeight() - Gdx.input.getY() - this.y));
         angle = (float) Math.toDegrees(angleRad - Math.PI / 2);
         angle = Math.round(angle) <= 0 ? angle += 360 : angle;
         if (Math.round(angle) == 360)
             angle = 0;
         //System.out.println(angle);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A)){
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             this.x -= movementSpeed * Gdx.graphics.getDeltaTime();
             if (Gdx.input.isKeyJustPressed(Input.Keys.A)) player.setCurrentAnimation(2);
             press = true;
@@ -213,7 +222,8 @@ public class Player extends Rectangle implements Character {
             press = true;
         }
 
-        if (this.x > 600 - 95) this.x = 600 - 95;
+
+        if (this.x > 600 - 50) this.x = 600 - 50;
         if (this.x < 0) this.x = 0;
         if (this.y > 720 - 95) this.y = 720 - 95;
         if (this.y < 0) this.y = 0;
@@ -225,7 +235,7 @@ public class Player extends Rectangle implements Character {
                 player.setCurrentAnimation(PlayerMovement.stillDOWN);
                 stage = 1;
             } else if (angle >= 135 && angle < 225) {
-               // System.out.println("LEFT");
+                // System.out.println("LEFT");
                 player.setCurrentAnimation(PlayerMovement.stillLEFT);
                 stage = 2;
             } else if (angle >= 225 && angle < 315) {
@@ -241,7 +251,7 @@ public class Player extends Rectangle implements Character {
         press = false;
     }
 
-    public void addBullet(float targetx, float targety){
+    public void addBullet(float targetx, float targety) {
         if (this.doubleAtk) {
             Bullet bullet1 = new Bullet(x - 15, y, targetx - 15, targety);
             Bullet bullet2 = new Bullet(x + 15, y, targetx + 15, targety);
@@ -250,8 +260,8 @@ public class Player extends Rectangle implements Character {
             bullet1.setBulSpeed(this.bulSpeed);
             bullet2.setBulSpeed(this.bulSpeed);
             if (newBul) {
-                bullet1.setTexture(new Texture("skill/newBull.png"));
-                bullet2.setTexture(new Texture("skill/newBull.png"));
+                bullet1.setTexture(new Texture("newBull.png"));
+                bullet2.setTexture(new Texture("newBull.png"));
             }
             bullets.add(bullet1, bullet2);
         } else {
@@ -259,14 +269,14 @@ public class Player extends Rectangle implements Character {
             bullet.setDamage(damage);
             bullet.setBulSpeed(this.bulSpeed);
             if (newBul) {
-                bullet.setTexture(new Texture("skill/newBull.png"));
+                bullet.setTexture(new Texture("newBull.png"));
             }
             bullets.add(bullet);
         }
         lastBulletSpawn = TimeUtils.nanoTime();
     }
 
-    public void removeBullet(Bullet bullet){
+    public void removeBullet(Bullet bullet) {
         bullets.removeValue(bullet, true);
     }
 

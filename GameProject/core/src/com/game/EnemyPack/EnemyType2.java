@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.game.EnemyPack.Enemy;
 import com.game.PlayerPack.Player;
 import com.game.Bullet;
 
+//
 public class EnemyType2 extends Enemy {
     int moveSpeed;
     float maxY;
@@ -23,14 +25,15 @@ public class EnemyType2 extends Enemy {
     public EnemyType2(Player target, Array obj) {
         super(target, obj);
         /*
-        bulspeed adalah kecepatan peluru
-        attack time adalah banyaknya serangan perdetik
+        bulspeed kecepatan peluru
+        attack time banyaknya serangan perdetik
          */
         super.setBulSpeed(250);
         super.setAttackTime(900000000);
         moveSpeed = 80;
-        setRandomPosition();
-        checkY();
+        this.setRandomPosition();
+        checkCollision();
+        // checkY();
 
         maxY = this.y + distance;
         minY = this.y - distance;
@@ -40,7 +43,65 @@ public class EnemyType2 extends Enemy {
         assetMage.manager.finishLoading();
         skin = new Skin();
         skin.addRegions(assetMage.manager.get("mageMovement.pack", TextureAtlas.class));
+        //untuk mengambil frame" gerakan dengan nama dalam pack
         mage = new MageMovement(this, skin.getRegion("mageMove"));
+    }
+
+    @Override
+    public void setRandomPosition() {
+        this.x = MathUtils.random(150, 600 - 150);
+        this.y = MathUtils.random(150, 700 - 150);
+    }
+
+
+    public int checkMax(){
+        int check = 0;
+        float tmp = this.y;
+        while (this.y <= tmp+ distance){
+
+           this.y += 10;
+           for (Rectangle wall:obj){
+
+               if(this.overlaps(wall)){
+
+                   check = 1;
+                   this.y = tmp;
+                   break;
+               }
+           }
+           if (check == 1){
+               break;
+           }
+       }
+       return check;
+    }
+
+    public int checkMin(){
+        int check = 0;
+        float tmp = this.y;
+        while (this.y >= tmp - distance){
+            this.y -= 10;
+            for (Rectangle wall: obj){
+                if(this.overlaps(wall)){
+                    check = 1;
+                    this.y = tmp;
+                    break;
+                }
+
+            }
+            if (check == 1){
+                break;
+            }
+        }
+        return check;
+    }
+
+    public void checkCollision() {
+
+        while (checkMin() == 1 || checkMax() == 1) {
+            this.setRandomPosition();
+        }
+
     }
 
     //mengecek tempat spawn agar tidak melebihi window

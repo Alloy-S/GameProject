@@ -1,7 +1,10 @@
-package com.game;
+package com.game.Screen;
+
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -9,18 +12,21 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.utils.Timer;
+import com.game.*;
 import com.game.EnemyPack.Enemy;
 import com.game.EnemyPack.EnemyType2;
 import com.game.EnemyPack.EnemyType3;
 import com.game.EnemyPack.EnemyType4;
+import com.game.Screen.LevelMenu;
 import com.game.PlayerPack.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -35,6 +41,7 @@ import com.game.PlayerPack.Skill;
 
 import java.util.Iterator;
 
+//untuk platform menjalankan game (player, map, enemy dll)
 public class GameScreen  implements Screen{
     final AfterDark game;
     private TiledMap map;
@@ -44,53 +51,46 @@ public class GameScreen  implements Screen{
     public Array<Enemy> enemies;
     Array<Bullet> bullets;
     Array<Rectangle> objectCollide;
-    long lastDropTime;
-    int dropsGathered;
     float shootTime;
     final float shootWaitTime = 0.1f;
     public Player player;
     Table maintable;
     Button setting;
     TextureAtlas atlas;
-    TextureAtlas atlasSkill;
     protected Skin skin;
-    Skin windowSkin;
     private Stage stage;
     Viewport viewport;
     private SmallScreen smallScreen;
     HealthBar helthPlayer;
     public Music music;
-    boolean levelUp = false;
     private Skill skill;
-    private pauseMenu pauseMenu;
-    Texture bg;
     float Xprev;
     float Yprev;
     boolean move = true;
     public boolean exit;
     private MapLayer layer;
+    public float delay;
+    public int stageGame;
+    public Sound diedSound;
 
 
-    public GameScreen(final AfterDark game) {
+    public GameScreen(final AfterDark game, String fileMapName) {
         this.game = game;
 
-        // load the images for the droplet and the bucket, 64x64 pixels each
         player = new Player(300, 100);
         helthPlayer = new HealthBar(player);
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 600, 720);
-        map = new TmxMapLoader().load("map/map_2.tmx");
+        map = new TmxMapLoader().load(fileMapName);
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
-
-        // create the raindrops array and spawn the first raindrop
         enemies = new Array<Enemy>();
         bullets = player.bullets;
-        //spawnEnemy();
 
-        bg = new Texture("forest3.png");
+
+        diedSound = Gdx.audio.newSound(Gdx.files.internal("died.wav"));
         atlas = new TextureAtlas("button/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("button/uiskin.json"),atlas);
         viewport = new ExtendViewport(600,720);
@@ -106,6 +106,8 @@ public class GameScreen  implements Screen{
 
         layer = map.getLayers().get("obj layer");
         objectCollide = new Array<Rectangle>();
+
+        //check object collision (tembok) pada map
         for (MapObject object : layer.getObjects()) {
             if (object instanceof RectangleMapObject) {
                 RectangleMapObject rectangleObject = (RectangleMapObject) object;
@@ -116,27 +118,24 @@ public class GameScreen  implements Screen{
                 }
             }
         }
-
-//        atlasSkill = new TextureAtlas(Gdx.files.internal("skill/window.atlas"));
-//        windowSkin = new Skin(Gdx.files.internal("skill/window.json"), atlasSkill);
+        //spawn emeny pertama kali
+//        spawnEnemy();
     }
 
     private void spawnEnemy() {
         Enemy enemy = new Enemy(player, objectCollide);
-        Enemy enemyv2 = new EnemyType2(player, objectCollide);
-        Enemy enemyV3 = new EnemyType3(player, objectCollide);
-        Enemy enemyV4 = new EnemyType4(player, objectCollide);
-
         enemies.add(enemy);
+        Enemy enemyv2 = new EnemyType2(player, objectCollide);
         enemies.add(enemyv2);
+        Enemy enemyV3 = new EnemyType3(player, objectCollide);
         enemies.add(enemyV3);
+        Enemy enemyV4 = new EnemyType4(player, objectCollide);
         enemies.add(enemyV4);
-        lastDropTime = TimeUtils.millis();
     }
 
     public void powerUp(){
-        if (player.getLevel()>player.getSkillCount()) {
-            skill = new Skill("Level UP", skin, this);
+        if (player.getLevel() > player.getSkillCount()) {
+            skill = new Skill("", skin, this);
             stage.addActor(skill);
             player.addSkill();
             skill.setPosition();
@@ -145,33 +144,16 @@ public class GameScreen  implements Screen{
 
     @Override
     public void render(float delta) {
-        // clear the screen with a dark blue color. The
-        // arguments to clear are the red, green
-        // blue and alpha component in the range [0,1]
-        // of the color to be used to clear the screen.
-        ScreenUtils.clear(254, 254, 254, 1);
-
-        // tell the camera to update its matrices.
         camera.update();
         mapRenderer.setView(camera);
         mapRenderer.render();
 
-
-        // tell the SpriteBatch to render in the
-        // coordinate system specified by the camera.
         game.batch.setProjectionMatrix(camera.combined);
 
-
-
-        // begin a new batch and draw the bucket and
-        // all drops
-        game.batch.begin();
-        //game.batch.draw(bg, 0, 0);
-        game.font.draw(game.batch, "FPS = " + Gdx.graphics.getFramesPerSecond(), 10, 700 );
         stage.act();
         stage.draw();
         Gdx.input.setInputProcessor(stage);
-
+        game.batch.begin();
 
         switch(state){
             case LEVELUP:
@@ -181,6 +163,7 @@ public class GameScreen  implements Screen{
                 smallScreen.render(60);
                 break;
             case RUN:
+
                 setting.addListener(new ClickListener(){
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
@@ -189,14 +172,11 @@ public class GameScreen  implements Screen{
                     }
                 });
 
-                game.font.setColor(Color.RED);
-                game.font.draw(game.batch, "Enemy Destroyed: " + dropsGathered, 320, 700);
+                helthPlayer.renderXp();
 
+                //untuk deteksi player menabrak objek (tembok)
                 for (int i = 0; i < objectCollide.size; i++) {
-
                     if (player.overlaps(objectCollide.get(i))) {
-                        // player.setPosition(objectCollide.get(i).getX(),  objectCollide.get(i).getY());
-                        System.out.println("player nabrak tembok");
                         move = false;
 
                         player.setX(Xprev);
@@ -205,6 +185,7 @@ public class GameScreen  implements Screen{
                     }
                 }
 
+
                 player.render(game.batch);
                 helthPlayer.render();
                 if (move == true) {
@@ -212,27 +193,40 @@ public class GameScreen  implements Screen{
                     Yprev = player.getY();
                 }
                 move = true;
-                game.font.draw(game.batch, "XP = " + player.getXp() + player.levelUp, 320, 600);
 
+                //jika player mati maka kembali ke menu pemilihan level
                 if (player.isDead()) {
-                    //game.setScreen(new Menu(game));
+                    game.setScreen(new LevelMenu(game));
                 }
 
                 if (player.levelUp) {
                     levelUp();
                 }
 
+
+
+                //untuk spawn enemy
                 if (enemies.isEmpty()) {
-                    System.out.println("YESSSSSSSSSSSSSSSSSS");
-                    spawnEnemy();
+                    delay += Gdx.graphics.getDeltaTime();
+                    if (delay >= 1.5f) {
+                        stageGame++;
+                        if (stageGame == 3) {
+                            dispose();
+                            game.setScreen(new LevelMenu(game));
+                        }
+                        delay = 0;
+                        spawnEnemy();
+                    }
                 }
 
+                //render player bullet
                 if (!player.bullets.isEmpty()) {
                     for (Bullet bullet : player.bullets) {
                         bullet.render(game.batch);
                     }
                 }
 
+                //deteksi player bullet menabrak tembok
                 if (!player.bullets.isEmpty()) {
                     for (Rectangle wall : objectCollide) {
                         for (Bullet bullet : player.bullets) {
@@ -244,6 +238,7 @@ public class GameScreen  implements Screen{
                     }
                 }
 
+                //render enemy
                 for (Enemy enemy : enemies) {
                     enemy.render(game.batch);
                     enemy.attack();
@@ -256,20 +251,17 @@ public class GameScreen  implements Screen{
                     shootTime = 0;
                 }
 
-                if (TimeUtils.millis() - lastDropTime > 4000) {
-                    //spawnEnemy();
-                }
-
                 Iterator<Enemy> iterEn = enemies.iterator();
 
                 while (iterEn.hasNext()) {
                     Enemy enemy = iterEn.next();
 
                     if (enemy.isDead()) {
+                        diedSound.play();
                         iterEn.remove();
-                        dropsGathered++;
                         player.addXp(enemy.getXp());
                     }
+
                     Iterator<Bullet> iterBull = player.bullets.iterator();
                     while (iterBull.hasNext()) {
                         Bullet bullet = iterBull.next();
@@ -286,10 +278,11 @@ public class GameScreen  implements Screen{
                 break;
         }
 
+
+        //untuk pause atau resume
         if(smallScreen.getState() == 1){
             smallScreen.setState(0);
             if (player.levelUp) {
-                System.out.println("levelup");
                 levelUp();
             } else {
                 resume();
@@ -298,6 +291,7 @@ public class GameScreen  implements Screen{
             game.setScreen(new Menu(game));
         }
         game.batch.end();
+
     }
 
     public Stage getStage() {
@@ -319,7 +313,8 @@ public class GameScreen  implements Screen{
 
     @Override
     public void dispose() {
-        music.dispose();
+        skin.dispose();
+        map.dispose();
     }
 
     public void pause(){

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 class AssetsPlayer {
     public AssetManager manager;
 
+//untuk load assets player
     public void load(){
         if(manager == null){
             manager = new AssetManager();

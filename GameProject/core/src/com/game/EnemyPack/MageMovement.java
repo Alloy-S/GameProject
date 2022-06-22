@@ -54,7 +54,7 @@ public class MageMovement {
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = (TextureRegion) walkAnimation.getKeyFrame(stateTime, true);
 
-        batch.draw(currentFrame, mage.x, mage.y);
+        batch.draw(currentFrame, mage.x - 16, mage.y - 16);
 
     }
 }

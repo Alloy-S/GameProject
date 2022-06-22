@@ -6,7 +6,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.game.Screen.Menu;
 
+//untuk base game untuk berjalan
 public class AfterDark extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
@@ -17,7 +19,7 @@ public class AfterDark extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		font = new BitmapFont(); // use libGDX's default Arial font
+		font = new BitmapFont(); 
 		soundclick = Gdx.audio.newSound(Gdx.files.internal("button-click.wav"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("bgm.wav"));
 		bg = new Texture("forest3.png");
@@ -29,8 +31,6 @@ public class AfterDark extends Game {
 	public void render() {
 		super.render();
 	}
-
-
 
 	@Override
 	public void dispose() {

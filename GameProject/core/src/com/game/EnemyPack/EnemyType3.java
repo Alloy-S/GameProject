@@ -23,14 +23,16 @@ public class EnemyType3 extends Enemy {
     float angle;
     int stage;
     int lastStage;
+    int xp;
     int attackStage;
     int attackCount;
     float attackTime;
 
+
     public EnemyType3(Player target, Array obj) {
         super(target, obj);
         super.setHp(100);
-        super.setDamage(25);
+        super.setDamage(20);
         this.height = 16;
         this.width = 16;
         this.moveSpeed = 150;
@@ -43,8 +45,8 @@ public class EnemyType3 extends Enemy {
         assetsGoblin.manager.finishLoading();
         skin = new Skin();
         skin.addRegions(assetsGoblin.manager.get("goblinMovement.pack", TextureAtlas.class));
-        goblin = new GoblinMovement(this, skin.getRegion("up"), skin.getRegion("down"), skin.getRegion("right"), skin.getRegion("left"), skin.getRegion("attackup"), skin.getRegion("attackdown"), skin.getRegion("attackright"), skin.getRegion("attackleft"),
-                skin.getRegion("death"));
+        //untuk mengambil frame" gerakan dengan nama dalam pack
+        goblin = new GoblinMovement(this, skin.getRegion("up"), skin.getRegion("down"), skin.getRegion("right"), skin.getRegion("left"), skin.getRegion("attackup"), skin.getRegion("attackdown"), skin.getRegion("attackright"), skin.getRegion("attackleft"));
 
     }
 
@@ -101,18 +103,24 @@ public class EnemyType3 extends Enemy {
 
     }
 
+    public void setXp(int xp){
+        this.xp = xp;
+    }
+
+
     @Override
     public void attack() {
-        System.out.println("Overlaps : " + attackCount);
         if (this.overlaps((Rectangle) target)) {
+            this.setXp(0);
             attackTime += Gdx.graphics.getDeltaTime();
             attackCount++;
-            if (!(attackCount  >= 2)) {
+            if (!(attackCount  >= 3)) {
                 goblin.setCurrentAnimation(attackStage);
                 target.takeDamage(this.getDamage());
             }
-            if (attackTime >= 0.25f)
-                this.setHp(0);
+            if (attackTime >= 0.75f)
+                attackCount = 0;
+                //this.setHp(0);
         } else {
             chase(((Player) target).x, ((Player) target).y);
         }

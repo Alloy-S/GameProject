@@ -46,7 +46,7 @@ public class EnemyType4 extends Enemy {
 
         skin = new Skin();
         skin.addRegions(assets.manager.get("batMove.pack", TextureAtlas.class));
-
+//untuk mengambil frame" gerakan dengan nama dalam pack
         batMovement = new BatMovement(this, skin.getRegion("batMove"));
     }
 
@@ -68,11 +68,13 @@ public class EnemyType4 extends Enemy {
 
 
     public void move(){
+        //cek jika jarak ke target < 10 maka hide = false
         if(length<10) {
             this.hide = false;
             time += Gdx.graphics.getDeltaTime();
             targetx = position.x;
             targety = position.y;
+            //jika time sudah mencapai 5, mulai bergerakdan dan hide = true
             if(time>5) {
                 do {
                     targetx = MathUtils.random(0, 700);

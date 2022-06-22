@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.game.PlayerPack.Player;
 
 public class Enemy extends Rectangle implements Character{
-    Character target;
+    Player target;
     public int hp = 100;
     private Boolean dead = false;
     Texture texture;
@@ -34,9 +34,6 @@ public class Enemy extends Rectangle implements Character{
 
 
     public Enemy(com.game.PlayerPack.Player target, Array<Rectangle> obj) {
-        if (texture == null) {
-            texture = new Texture("monster-icon.png");
-        }
         this.obj = obj;
         font = new BitmapFont();
         batch = new SpriteBatch();
@@ -50,7 +47,18 @@ public class Enemy extends Rectangle implements Character{
         this.attackTime = 1000000000;
         this.bulSpeed = 500;
         this.xp = 25;
-        setRandomPosition();
+        boolean check;
+        do {
+            check = false;
+            setRandomPosition();
+            for (Rectangle wall: obj){
+                if (this.overlaps(wall)){
+                    check = true;
+                }
+            }
+
+        } while (check);
+
 
         assetBee = new Assets();
         assetBee.load("beeMove.pack");
@@ -59,6 +67,7 @@ public class Enemy extends Rectangle implements Character{
         skin = new Skin();
         skin.addRegions(assetBee.manager.get("beeMove.pack", TextureAtlas.class));
 
+//untuk mengambil frame" gerakan dengan nama dalam pack
         beeMovement = new BeeMovement(this, skin.getRegion("beeMove"));
     }
 
@@ -105,15 +114,20 @@ public class Enemy extends Rectangle implements Character{
                     bullet.render(batch);
                     if (TimeUtils.nanoTime() - lastBulletSpawn > attackTime) addBullet();
 
+                    //cek collision dengan target
                     if (bullet.overlaps((Rectangle) target)) {
                         target.takeDamage(this.damage);
                         removeBullet(bullet);
                     }
+
+                    //cek collision dengan dinding
                     for (Rectangle wall: obj) {
                         if (bullet.overlaps(wall)) {
                             removeBullet(bullet);
                         }
                     }
+
+                    //cek posisi bullet (melebihi ukuran window atau tidak)
                     if (bullet.position.x < 0 || bullet.position.x > 600 - 16 || bullet.position.y > 720 - 16
                             || bullet.position.y < 0) {
                         removeBullet(bullet);

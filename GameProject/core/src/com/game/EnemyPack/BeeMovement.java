@@ -54,6 +54,6 @@ public class BeeMovement {
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = (TextureRegion) stillAnimation.getKeyFrame(stateTime, true);
 
-        batch.draw(currentFrame, bee.x, bee.y);
+        batch.draw(currentFrame, bee.x - 16, bee.y - 16);
     }
 }
