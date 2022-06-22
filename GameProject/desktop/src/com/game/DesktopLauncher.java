@@ -12,6 +12,7 @@ public class DesktopLauncher {
 		config.setTitle("GameProject");
 		config.setWindowedMode(600,720);
 		config.useVsync(true);
+		config.setTitle("THE JUNGLE");
 		new Lwjgl3Application(new AfterDark(), config);
 	}
 }
