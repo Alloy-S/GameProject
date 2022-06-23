@@ -11,12 +11,12 @@ import com.game.EnemyPack.Enemy;
 import com.game.PlayerPack.Player;
 import com.game.Bullet;
 
-//
+@SuppressWarnings("unchecked")
 public class EnemyType2 extends Enemy {
     int moveSpeed;
     float maxY;
     float minY;
-    int distance = 100;
+    int distance = 80;
     int mode;
     private MageMovement mage;
     private Assets assetMage;
@@ -32,7 +32,7 @@ public class EnemyType2 extends Enemy {
         super.setAttackTime(900000000);
         moveSpeed = 80;
         this.setRandomPosition();
-        checkCollision();
+        //checkCollision();
         // checkY();
 
         maxY = this.y + distance;
@@ -49,30 +49,31 @@ public class EnemyType2 extends Enemy {
 
     @Override
     public void setRandomPosition() {
-        this.x = MathUtils.random(150, 600 - 150);
-        this.y = MathUtils.random(150, 700 - 150);
+        this.x = MathUtils.random(150, 600 - 120);
+        this.y = MathUtils.random(150, 700 - 120);
+        checkCollision();
     }
 
 
     public int checkMax(){
         int check = 0;
         float tmp = this.y;
-        while (this.y <= tmp+ distance){
+        while (this.y <= tmp + distance){
 
-           this.y += 10;
+           this.y += 5;
            for (Rectangle wall:obj){
 
                if(this.overlaps(wall)){
 
                    check = 1;
-                   this.y = tmp;
-                   break;
+
                }
            }
            if (check == 1){
                break;
            }
        }
+        this.y = tmp;
        return check;
     }
 
@@ -80,12 +81,12 @@ public class EnemyType2 extends Enemy {
         int check = 0;
         float tmp = this.y;
         while (this.y >= tmp - distance){
-            this.y -= 10;
+            this.y -= 50;
             for (Rectangle wall: obj){
                 if(this.overlaps(wall)){
                     check = 1;
-                    this.y = tmp;
-                    break;
+
+
                 }
 
             }
@@ -93,6 +94,7 @@ public class EnemyType2 extends Enemy {
                 break;
             }
         }
+        this.y = tmp;
         return check;
     }
 

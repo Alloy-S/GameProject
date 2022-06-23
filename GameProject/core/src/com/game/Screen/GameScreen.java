@@ -214,13 +214,15 @@ public class GameScreen  implements Screen{
                     delay += Gdx.graphics.getDeltaTime();
                     if (delay >= 1.5f) {
                         stageGame++;
-                        if (stageGame == 3) {
+                        if (stageGame == 4) {
                             winSound.play();
                             dispose();
                             game.setScreen(new LevelMenu(game));
+                        } else {
+                            spawnEnemy();
                         }
                         delay = 0;
-                        spawnEnemy();
+
                     }
                 }
 
